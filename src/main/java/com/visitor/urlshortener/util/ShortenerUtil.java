@@ -13,7 +13,6 @@ public class ShortenerUtil {
     @Value("${api-key}")
     private String apiKey;
 
-
     public String encrypt(String toEncrypt) throws NoSuchAlgorithmException {
         MessageDigest md = MessageDigest.getInstance("SHA-256");
         md.update(toEncrypt.getBytes());
