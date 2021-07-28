@@ -6,12 +6,12 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-@Getter
 @Setter
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class shortenerResponseDto {
-    private String originalUrl;
+public class UrlResponseDto {
+    private String id;
     private String hashValue;
 }
