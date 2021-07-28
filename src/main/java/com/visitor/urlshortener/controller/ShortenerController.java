@@ -31,6 +31,7 @@ public class ShortenerController {
     @PostMapping("/url")
     public ResponseEntity<?> createShortUrl(String originalUrl) throws NoSuchAlgorithmException {
         String shortUrl = shortenerService.createShortUrl(originalUrl);
-        return new ResponseEntity<>(new shortenerResponseDto(shortUrl, originalUrl), HttpStatus.CREATED);
+        return new ResponseEntity<>(new shortenerResponseDto(originalUrl, shortUrl), HttpStatus.CREATED);
     }
+
 }
