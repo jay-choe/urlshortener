@@ -29,7 +29,7 @@ public class ShortenerUtil {
         return builder.toString();
     }
 
-    public boolean apiKeyCheck(String apiKeyHash) throws NoSuchAlgorithmException {
-        return encrypt(apiKey).equals(apiKeyHash);
-    }
+//    public boolean apiKeyCheck(String apiKeyHash) throws NoSuchAlgorithmException {
+//        return encrypt(apiKey).equals(apiKeyHash);
+//    }
 }
