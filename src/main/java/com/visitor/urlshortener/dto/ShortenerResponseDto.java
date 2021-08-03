@@ -14,5 +14,5 @@ import lombok.ToString;
 @ToString
 public class ShortenerResponseDto implements Serializable {
     private String originalUrl;
-    private String hashValue;
+    private String value;
 }

@@ -13,5 +13,5 @@ import lombok.ToString;
 @ToString
 public class UrlResponseDto {
     private String id;
-    private String hashValue;
+    private String value;
 }
