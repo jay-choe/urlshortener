@@ -26,11 +26,12 @@ public class ShortenerController {
 
     private final ShortenerService shortenerService;
 
-    @GetMapping("/{hashValue}")
-    public void redirectToOriginalUrl(@PathVariable String hashValue, HttpServletResponse response)
+    @GetMapping("/{value}")
+    public void redirectToOriginalUrl(@PathVariable String value, HttpServletResponse response)
         throws IOException {
-        log.info("hash value is {}", hashValue);
-        String redirectUrl = shortenerService.findOriginalUrl(hashValue);
+        log.info("value is {}", value);
+        String redirectUrl = shortenerService.findOriginalUrl(value);
+        response.setStatus(HttpStatus.MOVED_PERMANENTLY.value());
         response.sendRedirect(redirectUrl);
     }
 
