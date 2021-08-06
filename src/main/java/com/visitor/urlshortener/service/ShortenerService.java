@@ -43,9 +43,16 @@ public class ShortenerService {
 
     public String createShortUrl(String originalUrl) throws NoSuchAlgorithmException {
         String hashValue = shortenerUtil.encrypt(originalUrl);
-        Url url = new Url(hashValue, originalUrl);
+        String value = hashValue.substring(0, 10);
+        int start = 0;
+        int end = 0;
+        while (urlRepository.existsById(value) && end <= 32) {
+            start++;
+            end = start + 10;
+            value = hashValue.substring(start, end);
+        }
+        Url url = new Url(value, originalUrl);
         urlRepository.save(url);
-        String value = hashValue.substring(0, 8);
         log.info("Truncated Hash Value is {}", value);
         BigInteger bigInteger = new BigInteger(value, 16);
         String encoding = base62.encoding(bigInteger);
