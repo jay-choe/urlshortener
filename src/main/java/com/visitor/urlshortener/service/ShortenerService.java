@@ -9,6 +9,7 @@ import com.visitor.urlshortener.util.ShortenerUtil;
 import java.math.BigInteger;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -31,14 +32,11 @@ public class ShortenerService {
 
     public String findOriginalUrl(String encodedValue) {
         String originalHash = base62.decoding(encodedValue);
-        List<Url> urlList = urlRepository.searchByHashValueStartsWith(originalHash);
-        if (urlList == null) {
+        Optional<Url> foundUrl = urlRepository.findById(originalHash);
+        if (foundUrl.isEmpty()) {
             return errorRedirectUrl;
         }
-        return urlList.stream()
-            .map(url -> url.getOriginalUrl().toString())
-            .filter(url -> 1 == 1)
-            .findFirst().orElse(errorRedirectUrl);
+        return foundUrl.get().getOriginalUrl();
     }
 
     public String createShortUrl(String originalUrl) throws NoSuchAlgorithmException {
