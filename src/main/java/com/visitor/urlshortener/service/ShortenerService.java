@@ -34,6 +34,7 @@ public class ShortenerService {
         String originalHash = base62.decoding(encodedValue);
         Optional<Url> foundUrl = urlRepository.findById(originalHash);
         if (foundUrl.isEmpty()) {
+            log.error("Url is not found");
             return errorRedirectUrl;
         }
         return foundUrl.get().getOriginalUrl();

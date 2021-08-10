@@ -26,6 +26,11 @@ public class ShortenerController {
 
     private final ShortenerService shortenerService;
 
+    @GetMapping("/")
+    public String initialMessage() {
+        return "단축 Url 서비스 입니다.";
+    }
+
     @GetMapping("/{value}")
     public void redirectToOriginalUrl(@PathVariable String value, HttpServletResponse response)
         throws IOException {
