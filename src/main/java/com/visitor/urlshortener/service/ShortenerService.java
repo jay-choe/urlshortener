@@ -2,6 +2,7 @@ package com.visitor.urlshortener.service;
 
 import com.visitor.urlshortener.dto.ShortenerDto;
 import com.visitor.urlshortener.dto.UrlResponseDto;
+import com.visitor.urlshortener.dto.UrlResponseListDto;
 import com.visitor.urlshortener.entity.Url;
 import com.visitor.urlshortener.repository.UrlRepository;
 import com.visitor.urlshortener.util.Base62;
@@ -66,18 +67,18 @@ public class ShortenerService {
         return encoding;
     }
 
-    public List<UrlResponseDto> createShortUrl(List<ShortenerDto> urlList) {
-        return urlList
+    public UrlResponseListDto createShortUrl(List<ShortenerDto> urlList) {
+        return new UrlResponseListDto(urlList
             .stream()
             .map(url -> {
                 String value = null;
                 try {
                     value = createShortUrl(url.getOriginalUrl());
                 } catch (NoSuchAlgorithmException e) {
-                  log.error(e.getMessage());
+                    log.error(e.getMessage());
                 }
                 return new UrlResponseDto(url.getId(), value);
             })
-            .collect(Collectors.toList());
+            .collect(Collectors.toList()));
     }
 }

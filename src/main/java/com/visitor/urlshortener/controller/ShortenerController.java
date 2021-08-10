@@ -4,6 +4,7 @@ import com.visitor.urlshortener.dto.ShortenerDto;
 import com.visitor.urlshortener.dto.ShortenerResponseDto;
 import com.visitor.urlshortener.dto.UrlCreateDto;
 import com.visitor.urlshortener.dto.UrlResponseDto;
+import com.visitor.urlshortener.dto.UrlResponseListDto;
 import com.visitor.urlshortener.service.ShortenerService;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
@@ -49,7 +50,7 @@ public class ShortenerController {
     }
 
     @PostMapping("/urls")
-    public ResponseEntity<List<UrlResponseDto>> createShortUrls(@RequestBody UrlCreateDto urlCreateDto) {
+    public ResponseEntity<UrlResponseListDto> createShortUrls(@RequestBody UrlCreateDto urlCreateDto) {
         log.info("CreateShortUrls Called");
         log.info("Contents: {}", urlCreateDto);
         return new ResponseEntity<>(shortenerService.createShortUrl(urlCreateDto.getUrlList()), HttpStatus.CREATED);
