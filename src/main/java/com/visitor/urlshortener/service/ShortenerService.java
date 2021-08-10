@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -43,15 +44,21 @@ public class ShortenerService {
     public String createShortUrl(String originalUrl) throws NoSuchAlgorithmException {
         String hashValue = shortenerUtil.encrypt(originalUrl);
         String value = hashValue.substring(0, 10);
-        int start = 0;
-        int end = 0;
-        while (urlRepository.existsById(value) && end <= 32) {
-            start++;
-            end = start + 10;
-            value = hashValue.substring(start, end);
-        }
         Url url = new Url(value, originalUrl);
-        urlRepository.save(url);
+        try {
+            urlRepository.save(url);
+        } catch (DataIntegrityViolationException exception) {
+            log.error("Hash Collision Occured");
+            int start = 0;
+            int end = 0;
+
+            while (urlRepository.existsById(value) && end <= 32) {
+                start++;
+                end = start + 10;
+                value = hashValue.substring(start, end);
+            }
+            urlRepository.save(new Url(value, originalUrl));
+        }
         log.info("Truncated Hash Value is {}", value);
         BigInteger bigInteger = new BigInteger(value, 16);
         String encoding = base62.encoding(bigInteger);
