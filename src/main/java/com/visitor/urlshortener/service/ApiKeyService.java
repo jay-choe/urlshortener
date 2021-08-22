@@ -2,6 +2,7 @@ package com.visitor.urlshortener.service;
 
 import com.visitor.urlshortener.entity.ApiKey;
 import com.visitor.urlshortener.repository.ApiKeyRepository;
+import java.util.Optional;
 import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -16,6 +17,17 @@ public class ApiKeyService {
 
     public ApiKeyService(ApiKeyRepository apiKeyRepository) {
         this.apiKeyRepository = apiKeyRepository;
+    }
+
+    public boolean validateKey(String key) {
+        if (key == null) {
+            return false;
+        }
+        Optional<ApiKey> foundKey = apiKeyRepository.findById(key);
+        if (foundKey.isEmpty()) {
+            return false;
+        }
+        return true;
     }
 
 

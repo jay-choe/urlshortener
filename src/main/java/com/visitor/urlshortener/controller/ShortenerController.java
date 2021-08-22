@@ -5,6 +5,7 @@ import com.visitor.urlshortener.dto.ShortenerResponseDto;
 import com.visitor.urlshortener.dto.UrlCreateDto;
 import com.visitor.urlshortener.dto.UrlResponseDto;
 import com.visitor.urlshortener.dto.UrlResponseListDto;
+import com.visitor.urlshortener.service.ApiKeyService;
 import com.visitor.urlshortener.service.ShortenerService;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
@@ -28,6 +30,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class ShortenerController {
 
     private final ShortenerService shortenerService;
+    private final ApiKeyService apiKeyService;
 
     @GetMapping("/")
     public String initialMessage() {
@@ -44,18 +47,29 @@ public class ShortenerController {
     }
 
     @PostMapping("/url")
-    public ResponseEntity<?> createShortUrl(String originalUrl) throws NoSuchAlgorithmException {
+    public ResponseEntity<?> createShortUrl(String originalUrl,
+        @RequestHeader(value = "X-API-KEY") String value) throws NoSuchAlgorithmException {
         log.info("CreateShortUrl");
         log.info("Original url is {}", originalUrl);
+        boolean validated = apiKeyService.validateKey(value);
+        if (!validated) {
+            log.error("Not valid key: {}", value);
+            return new ResponseEntity<>("API-Key가 유효하지 않습니다", HttpStatus.UNAUTHORIZED);
+        }
         String shortUrl = shortenerService.createShortUrl(originalUrl);
         return new ResponseEntity<>(new ShortenerResponseDto(originalUrl, shortUrl), HttpStatus.CREATED);
     }
 
     @PostMapping("/urls")
-    public ResponseEntity<UrlResponseListDto> createShortUrls(@RequestBody UrlCreateDto urlCreateDto
-    , HttpServletRequest request) {
+    public ResponseEntity<?> createShortUrls(@RequestBody UrlCreateDto urlCreateDto
+    , @RequestHeader(value = "X-API-KEY") String value) {
         log.info("CreateShortUrls Called");
         log.info("Contents: {}", urlCreateDto);
+        boolean validated = apiKeyService.validateKey(value);
+        if (!validated) {
+            log.error("Not valid key: {}", value);
+            return new ResponseEntity<>("API-Key가 유효하지 않습니다", HttpStatus.UNAUTHORIZED);
+        }
         return new ResponseEntity<>(shortenerService.createShortUrl(urlCreateDto.getUrlList()), HttpStatus.CREATED);
     }
 }
