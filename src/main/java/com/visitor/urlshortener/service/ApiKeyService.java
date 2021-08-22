@@ -4,10 +4,12 @@ import com.visitor.urlshortener.entity.ApiKey;
 import com.visitor.urlshortener.repository.ApiKeyRepository;
 import java.util.Optional;
 import javax.annotation.PostConstruct;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
+@Slf4j
 public class ApiKeyService {
 
     @Value("${api-key}")
@@ -21,12 +23,15 @@ public class ApiKeyService {
 
     public boolean validateKey(String key) {
         if (key == null) {
+            log.error("Api key is null");
             return false;
         }
         Optional<ApiKey> foundKey = apiKeyRepository.findById(key);
         if (foundKey.isEmpty()) {
+            log.error("Not a valid key");
             return false;
         }
+        log.info("Valid key");
         return true;
     }
 

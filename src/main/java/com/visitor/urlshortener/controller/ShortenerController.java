@@ -53,7 +53,6 @@ public class ShortenerController {
         log.info("Original url is {}", originalUrl);
         boolean validated = apiKeyService.validateKey(value);
         if (!validated) {
-            log.error("Not valid key: {}", value);
             return new ResponseEntity<>("API-Key가 유효하지 않습니다", HttpStatus.UNAUTHORIZED);
         }
         String shortUrl = shortenerService.createShortUrl(originalUrl);
@@ -67,7 +66,6 @@ public class ShortenerController {
         log.info("Contents: {}", urlCreateDto);
         boolean validated = apiKeyService.validateKey(value);
         if (!validated) {
-            log.error("Not valid key: {}", value);
             return new ResponseEntity<>("API-Key가 유효하지 않습니다", HttpStatus.UNAUTHORIZED);
         }
         return new ResponseEntity<>(shortenerService.createShortUrl(urlCreateDto.getUrlList()), HttpStatus.CREATED);
