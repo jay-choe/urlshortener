@@ -2,16 +2,11 @@ package com.visitor.urlshortener.util;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.List;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpRequest;
+import javax.annotation.PostConstruct;
 import org.springframework.stereotype.Component;
 
 @Component
 public class ShortenerUtil {
-
-    @Value("${api-key}")
-    private String apiKey;
 
     public String encrypt(String toEncrypt) throws NoSuchAlgorithmException {
         MessageDigest md = MessageDigest.getInstance("SHA-256");
@@ -27,8 +22,4 @@ public class ShortenerUtil {
         }
         return builder.toString();
     }
-
-//    public boolean apiKeyCheck(String apiKeyHash) throws NoSuchAlgorithmException {
-//        return encrypt(apiKey).equals(apiKeyHash);
-//    }
 }
