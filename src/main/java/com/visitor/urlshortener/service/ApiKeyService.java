@@ -9,8 +9,8 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class ApiKeyService {
 
-    @Value("${secret}")
-    private String secret;
+    @Value("${secretKey}")
+    private String secretKey;
 
     private final ShortenerUtil util;
 
@@ -24,17 +24,20 @@ public class ApiKeyService {
             return false;
         }
         if (!key.contains(".")) {
-            log.error("Invalid Api key");
+            log.error("Invalid Api key format");
             return false;
         }
         String separateKey[] = key.split("\\.");
-        String text = separateKey[0];
-        String hash = separateKey[1];
-        if (util.hmacEncrypt(text, secret).equals(hash)) {
-            log.info("Valid key");
-            return true;
+        String encodedValue = separateKey[0];
+        String encryptedValue = separateKey[1];
+        try {
+            if (util.decryptApiKey(encryptedValue, secretKey).equals(encodedValue)) {
+                log.info("Valid key");
+                return true;
+            }
+        } catch (Exception e) {
+            log.error("Invalid Api Key");
         }
-        log.error("Invalid Key Hash");
         return false;
     }
 }

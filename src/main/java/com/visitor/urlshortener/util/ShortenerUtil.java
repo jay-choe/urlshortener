@@ -1,11 +1,12 @@
 package com.visitor.urlshortener.util;
 
-import java.security.InvalidKeyException;
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import javax.crypto.Mac;
+import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
 import org.springframework.stereotype.Component;
+import org.springframework.util.Base64Utils;
 
 @Component
 public class ShortenerUtil {
@@ -17,11 +18,18 @@ public class ShortenerUtil {
         return bytesToHex(md.digest());
     }
 
-    public String hmacEncrypt(String toEncrypt, String secret) throws Exception{
-        Mac hmacMD5 = Mac.getInstance("HmacMD5");
-        SecretKeySpec secretKeySpec = new SecretKeySpec(secret.getBytes(), "HmacMD5");
-        hmacMD5.init(secretKeySpec);
-        return bytesToHex(hmacMD5.doFinal(toEncrypt.getBytes()));
+    public String encryptApiKey(String toEncrypt, String key) throws Exception{
+        SecretKeySpec keySpec = new SecretKeySpec(key.getBytes(), "AES");
+        Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
+        cipher.init(Cipher.ENCRYPT_MODE, keySpec);
+        return Base64Utils.encodeToUrlSafeString(cipher.doFinal(toEncrypt.getBytes()));
+    }
+
+    public String decryptApiKey(String toDecrypt, String key) throws Exception{
+        SecretKeySpec keySpec = new SecretKeySpec(key.getBytes(), "AES");
+        Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5PADDING");
+        cipher.init(Cipher.DECRYPT_MODE, keySpec);
+        return new String(cipher.doFinal(Base64Utils.decodeFromUrlSafeString(toDecrypt)));
     }
 
 
