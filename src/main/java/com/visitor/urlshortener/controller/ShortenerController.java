@@ -48,7 +48,7 @@ public class ShortenerController {
 
     @PostMapping("/url")
     public ResponseEntity<?> createShortUrl(String originalUrl,
-        @RequestHeader(value = "X-API-KEY") String value) throws NoSuchAlgorithmException {
+        @RequestHeader(value = "X-API-KEY") String value) throws Exception {
         log.info("CreateShortUrl");
         log.info("Original url is {}", originalUrl);
         boolean validated = apiKeyService.validateKey(value);
@@ -61,7 +61,7 @@ public class ShortenerController {
 
     @PostMapping("/urls")
     public ResponseEntity<?> createShortUrls(@RequestBody UrlCreateDto urlCreateDto
-    , @RequestHeader(value = "X-API-KEY") String value) {
+    , @RequestHeader(value = "X-API-KEY") String value) throws Exception {
         log.info("CreateShortUrls Called");
         log.info("Contents: {}", urlCreateDto);
         boolean validated = apiKeyService.validateKey(value);

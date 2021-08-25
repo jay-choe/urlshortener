@@ -1,9 +1,6 @@
 package com.visitor.urlshortener.service;
 
-import com.visitor.urlshortener.entity.ApiKey;
-import com.visitor.urlshortener.repository.ApiKeyRepository;
-import java.util.Optional;
-import javax.annotation.PostConstruct;
+import com.visitor.urlshortener.util.ShortenerUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -12,35 +9,32 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class ApiKeyService {
 
-    @Value("${api-key}")
-    private String apiKey;
+    @Value("${secret}")
+    private String secret;
 
-    private final ApiKeyRepository apiKeyRepository;
+    private final ShortenerUtil util;
 
-    public ApiKeyService(ApiKeyRepository apiKeyRepository) {
-        this.apiKeyRepository = apiKeyRepository;
+    public ApiKeyService(ShortenerUtil util) {
+        this.util = util;
     }
 
-    public boolean validateKey(String key) {
+    public boolean validateKey(String key) throws Exception {
         if (key == null) {
             log.error("Api key is null");
             return false;
         }
-        Optional<ApiKey> foundKey = apiKeyRepository.findById(key);
-        if (foundKey.isEmpty()) {
-            log.error("Not a valid key");
+        if (!key.contains(".")) {
+            log.error("Invalid Api key");
             return false;
         }
-        log.info("Valid key");
-        return true;
-    }
-
-
-    @PostConstruct
-    private void syncApiKey() {
-        if (!apiKeyRepository.existsById(apiKey)) {
-            ApiKey apiKeyInstance = new ApiKey(apiKey);
-            apiKeyRepository.save(apiKeyInstance);
+        String separateKey[] = key.split("\\.");
+        String text = separateKey[0];
+        String hash = separateKey[1];
+        if (util.hmacEncrypt(text, secret).equals(hash)) {
+            log.info("Valid key");
+            return true;
         }
+        log.error("Invalid Key Hash");
+        return false;
     }
 }
