@@ -32,7 +32,15 @@ public class Base62 {
             ++indexOfEncodedStr;
         }
 
-        return retValue.toString(16);
+        return addPadding(retValue.toString(16));
     }
 
+    public String addPadding(String decodedValue) {
+        if (decodedValue.length() != 10) {
+            while (decodedValue.length() != 10) {
+                decodedValue = "0".concat(decodedValue);
+            }
+        }
+        return decodedValue;
+    }
 }

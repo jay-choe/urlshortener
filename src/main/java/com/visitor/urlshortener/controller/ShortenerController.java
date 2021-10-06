@@ -1,17 +1,11 @@
 package com.visitor.urlshortener.controller;
 
-import com.visitor.urlshortener.dto.ShortenerDto;
 import com.visitor.urlshortener.dto.ShortenerResponseDto;
 import com.visitor.urlshortener.dto.UrlCreateDto;
-import com.visitor.urlshortener.dto.UrlResponseDto;
 import com.visitor.urlshortener.dto.UrlResponseListDto;
 import com.visitor.urlshortener.service.ApiKeyService;
 import com.visitor.urlshortener.service.ShortenerService;
 import java.io.IOException;
-import java.security.NoSuchAlgorithmException;
-import java.util.Enumeration;
-import java.util.List;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -34,7 +28,7 @@ public class ShortenerController {
 
     @GetMapping("/")
     public String initialMessage() {
-        return "단축 Url 서비스 입니다.";
+        return "단축 Url 서비스 입니다";
     }
 
     @GetMapping("/{value}")
@@ -42,6 +36,7 @@ public class ShortenerController {
         throws IOException {
         log.info("value is {}", value);
         String redirectUrl = shortenerService.findOriginalUrl(value);
+        log.info("Redirect URL is :{}", redirectUrl);
         response.setStatus(HttpStatus.MOVED_PERMANENTLY.value());
         response.sendRedirect(redirectUrl);
     }
@@ -56,6 +51,7 @@ public class ShortenerController {
             return new ResponseEntity<>("API-Key가 유효하지 않습니다", HttpStatus.UNAUTHORIZED);
         }
         String shortUrl = shortenerService.createShortUrl(originalUrl);
+        log.info("shortUrl is {}", shortUrl);
         return new ResponseEntity<>(new ShortenerResponseDto(originalUrl, shortUrl), HttpStatus.CREATED);
     }
 
@@ -68,6 +64,8 @@ public class ShortenerController {
         if (!validated) {
             return new ResponseEntity<>("API-Key가 유효하지 않습니다", HttpStatus.UNAUTHORIZED);
         }
-        return new ResponseEntity<>(shortenerService.createShortUrl(urlCreateDto.getUrlList()), HttpStatus.CREATED);
+        UrlResponseListDto shortUrls = shortenerService.createShortUrl(urlCreateDto.getUrlList());
+        log.info("Short URLs are {}", shortUrls);
+        return new ResponseEntity<>(shortUrls, HttpStatus.CREATED);
     }
 }
