@@ -47,4 +47,13 @@ public class Base62 {
         }
         return decodedValue;
     }
+    public boolean checkInvalidCharacter(String value) {
+        int len = value.length();
+        for (int i = 0; i < len; i++) {
+            if (BASE_FORMAT.indexOf(value.charAt(i)) == -1) {
+                return false;
+            }
+        }
+        return true;
+    }
 }

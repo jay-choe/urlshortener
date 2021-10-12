@@ -33,7 +33,19 @@ public class ShortenerService {
     }
 
     public String findOriginalUrl(String encodedValue) {
+        boolean isValidStr = base62.checkInvalidCharacter(encodedValue);
+
+        if (!isValidStr) {
+            log.error("잘못된 인코딩 값: {}", encodedValue);
+            return errorRedirectUrl;
+        }
         String originalHash = base62.decoding(encodedValue);
+
+        if (originalHash.length() != 10) {
+            log.error("원본 해시길이가 아닙니다 {}", originalHash);
+            return errorRedirectUrl;
+        }
+
         Optional<Url> foundUrl = urlRepository.findById(originalHash);
         if (foundUrl.isEmpty()) {
             log.error("Url is not found");
