@@ -20,6 +20,7 @@ bin/
 application-dev.properties
 application-prod.properties
 
+log.config.path_IS_UNDEFINED
 ### IntelliJ IDEA ###
 .idea
 *.iws
