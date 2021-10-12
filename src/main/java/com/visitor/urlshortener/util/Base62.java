@@ -1,9 +1,11 @@
 package com.visitor.urlshortener.util;
 
 import java.math.BigInteger;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 @Component
+@Slf4j
 public class Base62 {
     private final int BASE = 62;
     public  final String BASE_FORMAT = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
@@ -36,10 +38,12 @@ public class Base62 {
     }
 
     public String addPadding(String decodedValue) {
-        if (decodedValue.length() != 10) {
-            while (decodedValue.length() != 10) {
+        if (decodedValue.length() < 10) {
+            log.info("Add padding - decodedValue: {}", decodedValue);
+            while (decodedValue.length() < 10) {
                 decodedValue = "0".concat(decodedValue);
             }
+            log.info("Add padding - Padded value: {}", decodedValue);
         }
         return decodedValue;
     }
