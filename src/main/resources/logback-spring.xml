@@ -3,7 +3,7 @@
   <springProfile name="dev">
     <property resource="logback-dev.properties"/>
   </springProfile>
-  <springProfile name="local">
+  <springProfile name="prod">
     <property resource="logback-local.properties"/>
   </springProfile>
   <springProperty scope="context" name="LOG_LEVEL" source="logging.level.root"/>
