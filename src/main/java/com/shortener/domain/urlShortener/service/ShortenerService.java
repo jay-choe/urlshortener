@@ -1,12 +1,12 @@
-package com.visitor.urlshortener.service;
+package com.shortener.domain.urlShortener.service;
 
-import com.visitor.urlshortener.dto.ShortenerDto;
-import com.visitor.urlshortener.dto.UrlResponseDto;
-import com.visitor.urlshortener.dto.UrlResponseListDto;
-import com.visitor.urlshortener.entity.Url;
-import com.visitor.urlshortener.repository.UrlRepository;
-import com.visitor.urlshortener.util.Base62;
-import com.visitor.urlshortener.util.ShortenerUtil;
+import com.shortener.domain.urlShortener.dto.ShortenerDto;
+import com.shortener.domain.urlShortener.dto.UrlResponseDto;
+import com.shortener.domain.urlShortener.repository.UrlRepository;
+import com.shortener.common.util.Base62;
+import com.shortener.domain.urlShortener.dto.UrlResponseListDto;
+import com.shortener.domain.urlShortener.entity.Url;
+import com.shortener.common.util.ShortenerUtil;
 import java.math.BigInteger;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;

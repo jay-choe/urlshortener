@@ -1,4 +1,4 @@
-package com.visitor.urlshortener.dto;
+package com.shortener.domain.urlShortener.dto;
 
 import java.io.Serializable;
 import java.util.List;

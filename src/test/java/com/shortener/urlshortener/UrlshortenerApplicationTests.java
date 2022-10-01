@@ -1,8 +1,7 @@
-package com.visitor.urlshortener;
+package com.shortener.urlshortener;
 
-import com.visitor.urlshortener.util.ShortenerUtil;
+import com.shortener.common.util.ShortenerUtil;
 import java.security.NoSuchAlgorithmException;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

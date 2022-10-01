@@ -1,4 +1,4 @@
-package com.visitor.urlshortener.dto;
+package com.shortener.domain.urlShortener.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

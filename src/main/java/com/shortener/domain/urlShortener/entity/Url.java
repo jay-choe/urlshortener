@@ -1,4 +1,4 @@
-package com.visitor.urlshortener.entity;
+package com.shortener.domain.urlShortener.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

@@ -1,6 +1,6 @@
-package com.visitor.urlshortener.service;
+package com.shortener.domain.apiKey.service;
 
-import com.visitor.urlshortener.util.ShortenerUtil;
+import com.shortener.common.util.ShortenerUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;

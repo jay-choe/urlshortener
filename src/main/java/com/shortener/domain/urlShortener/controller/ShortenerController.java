@@ -1,10 +1,10 @@
-package com.visitor.urlshortener.controller;
+package com.shortener.domain.urlShortener.controller;
 
-import com.visitor.urlshortener.dto.ShortenerResponseDto;
-import com.visitor.urlshortener.dto.UrlCreateDto;
-import com.visitor.urlshortener.dto.UrlResponseListDto;
-import com.visitor.urlshortener.service.ApiKeyService;
-import com.visitor.urlshortener.service.ShortenerService;
+import com.shortener.domain.urlShortener.dto.UrlCreateDto;
+import com.shortener.domain.urlShortener.dto.ShortenerResponseDto;
+import com.shortener.domain.urlShortener.dto.UrlResponseListDto;
+import com.shortener.domain.apiKey.service.ApiKeyService;
+import com.shortener.domain.urlShortener.service.ShortenerService;
 import java.io.IOException;
 import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;

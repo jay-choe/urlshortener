@@ -1,4 +1,4 @@
-package com.visitor.urlshortener.util;
+package com.shortener.common.util;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;

@@ -1,6 +1,6 @@
-package com.visitor.urlshortener;
+package com.shortener.urlshortener;
 
-import com.visitor.urlshortener.util.ShortenerUtil;
+import com.shortener.common.util.ShortenerUtil;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

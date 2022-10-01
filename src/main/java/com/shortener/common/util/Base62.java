@@ -1,4 +1,4 @@
-package com.visitor.urlshortener.util;
+package com.shortener.common.util;
 
 import java.math.BigInteger;
 import lombok.extern.slf4j.Slf4j;
