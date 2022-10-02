@@ -19,5 +19,9 @@ public class ShortenerFacade {
         return service.createCustomUrl(originUrl, target);
     }
 
+    @Transactional
+    public void createShortUrlByMultiRequest() {
+
+    }
 
 }

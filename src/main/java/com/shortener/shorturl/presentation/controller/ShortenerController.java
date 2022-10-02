@@ -2,7 +2,7 @@ package com.shortener.shorturl.presentation.controller;
 
 import com.shortener.common.response.ApiResponse;
 import com.shortener.shorturl.application.shortUrl.dto.CreateCustomUrlCommand;
-import com.shortener.shorturl.application.shortUrl.dto.UrlCreateDto;
+import com.shortener.common.request.MultiShortUrlRequest;
 import com.shortener.shorturl.application.shortUrl.dto.ShortenerResponseDto;
 import com.shortener.shorturl.application.shortUrl.dto.UrlResponseListDto;
 import com.shortener.shorturl.domain.apiKey.service.ApiKeyService;
@@ -61,15 +61,20 @@ public class ShortenerController {
     }
 
     @PostMapping("/multi-url")
-    public ResponseEntity<?> createShortUrls(@RequestBody UrlCreateDto urlCreateDto
+    public ResponseEntity<?> createShortUrls(@RequestBody MultiShortUrlRequest request
     , @RequestHeader(value = "X-API-KEY") String value) throws Exception {
         log.info("CreateShortUrls Called");
-        log.info("Contents: {}", urlCreateDto);
+        log.info("Contents: {}", request);
+        // TODO : validation -> detach
         boolean validated = apiKeyService.validateKey(value);
+
         if (!validated) {
             return new ResponseEntity<>("API-Key가 유효하지 않습니다", HttpStatus.UNAUTHORIZED);
         }
-        UrlResponseListDto shortUrls = shortenerService.createShortUrl(urlCreateDto.getUrlList());
+
+
+        // TODO: Presentation -> facade 계층 의존성 제거 (command)
+        UrlResponseListDto shortUrls = shortenerService.createShortUrl(request.getUrlList());
         log.info("Short URLs are {}", shortUrls);
         return new ResponseEntity<>(shortUrls, HttpStatus.CREATED);
     }

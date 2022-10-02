@@ -1,6 +1,6 @@
 package com.shortener.shorturl.application.shortUrl.service;
 
-import com.shortener.shorturl.application.shortUrl.dto.ShortenerDto;
+import com.shortener.common.request.ShortUrlRequest;
 import com.shortener.shorturl.application.shortUrl.dto.UrlResponseDto;
 import com.shortener.shorturl.application.shortUrl.exception.AlreadyExistException;
 import com.shortener.shorturl.infrastructure.persistence.UrlRepository;
@@ -75,7 +75,7 @@ public class ShortenerService {
         return encoding;
     }
 
-    public UrlResponseListDto createShortUrl(List<ShortenerDto> urlList) {
+    public UrlResponseListDto createShortUrl(List<ShortUrlRequest> urlList) {
         return new UrlResponseListDto(urlList
             .stream()
             .map(url -> {
