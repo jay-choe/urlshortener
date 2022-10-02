@@ -11,13 +11,6 @@ public class ApiKeyService {
 
     @Value("${secretKey}")
     private String secretKey;
-
-    private final ShortenerUtil util;
-
-    public ApiKeyService(ShortenerUtil util) {
-        this.util = util;
-    }
-
     public boolean validateKey(String key) throws Exception {
         if (key == null) {
             log.error("Api key is null");
@@ -31,7 +24,7 @@ public class ApiKeyService {
         String encodedValue = separateKey[0];
         String encryptedValue = separateKey[1];
         try {
-            if (util.decryptApiKey(encryptedValue, secretKey).equals(encodedValue)) {
+            if (ShortenerUtil.decryptApiKey(encryptedValue, secretKey).equals(encodedValue)) {
                 log.info("Valid key");
                 return true;
             }

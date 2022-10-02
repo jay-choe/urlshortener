@@ -12,7 +12,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class ShortenerResponseDto implements Serializable {
+public class ShortenerResponseDto {
     private String originalUrl;
     private String value;
 }

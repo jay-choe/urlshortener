@@ -4,8 +4,8 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
 
 import com.shortener.shorturl.application.shortUrl.exception.AlreadyExistException;
-import com.shortener.shorturl.domain.urlShortener.entity.Url;
-import com.shortener.shorturl.domain.urlShortener.repository.UrlRepository;
+import com.shortener.shorturl.domain.urlShortener.url.Url;
+import com.shortener.shorturl.infrastructure.persistence.UrlRepository;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
