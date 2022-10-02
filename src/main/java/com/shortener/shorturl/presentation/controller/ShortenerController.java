@@ -1,10 +1,14 @@
-package com.shortener.domain.urlShortener.controller;
+package com.shortener.shorturl.presentation.controller;
 
-import com.shortener.domain.urlShortener.dto.UrlCreateDto;
-import com.shortener.domain.urlShortener.dto.ShortenerResponseDto;
-import com.shortener.domain.urlShortener.dto.UrlResponseListDto;
-import com.shortener.domain.apiKey.service.ApiKeyService;
-import com.shortener.domain.urlShortener.service.ShortenerService;
+import com.shortener.common.response.ApiResponse;
+import com.shortener.shorturl.application.shortUrl.dto.CreateCustomUrlCommand;
+import com.shortener.shorturl.application.shortUrl.dto.UrlCreateDto;
+import com.shortener.shorturl.application.shortUrl.dto.ShortenerResponseDto;
+import com.shortener.shorturl.application.shortUrl.dto.UrlResponseListDto;
+import com.shortener.shorturl.domain.apiKey.service.ApiKeyService;
+import com.shortener.shorturl.application.shortUrl.service.ShortenerFacade;
+import com.shortener.shorturl.application.shortUrl.service.ShortenerService;
+import com.shortener.shorturl.presentation.dto.CreateCustomUrlRequest;
 import java.io.IOException;
 import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class ShortenerController {
 
+    private final ShortenerFacade shortenerFacade;
     private final ShortenerService shortenerService;
     private final ApiKeyService apiKeyService;
 
@@ -67,5 +72,13 @@ public class ShortenerController {
         UrlResponseListDto shortUrls = shortenerService.createShortUrl(urlCreateDto.getUrlList());
         log.info("Short URLs are {}", shortUrls);
         return new ResponseEntity<>(shortUrls, HttpStatus.CREATED);
+    }
+
+    @PostMapping("/custom-url")
+    public ApiResponse<?> createCustomUrl(@RequestBody CreateCustomUrlRequest request) {
+        log.info("Create Custom URL Request");
+        CreateCustomUrlCommand command = CreateCustomUrlCommand.of(request.getOriginUrl(), request.getTarget());
+        String customUrl = shortenerFacade.createCustomUrl(command);
+        return ApiResponse.of("2000", customUrl);
     }
 }

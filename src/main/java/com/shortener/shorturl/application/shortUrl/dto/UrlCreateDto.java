@@ -1,6 +1,5 @@
-package com.shortener.domain.urlShortener.dto;
+package com.shortener.shorturl.application.shortUrl.dto;
 
-import java.io.Serializable;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -10,9 +9,9 @@ import lombok.ToString;
 
 @Getter
 @Setter
-@ToString
 @AllArgsConstructor
 @NoArgsConstructor
-public class UrlResponseListDto implements Serializable {
-    private List<UrlResponseDto> urlResponseList;
+@ToString
+public class UrlCreateDto {
+    private List<ShortenerDto> urlList;
 }

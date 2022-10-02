@@ -1,11 +1,12 @@
-package com.shortener.domain.urlShortener.service;
+package com.shortener.shorturl.application.shortUrl.service;
 
-import com.shortener.domain.urlShortener.dto.ShortenerDto;
-import com.shortener.domain.urlShortener.dto.UrlResponseDto;
-import com.shortener.domain.urlShortener.repository.UrlRepository;
+import com.shortener.shorturl.application.shortUrl.dto.ShortenerDto;
+import com.shortener.shorturl.application.shortUrl.dto.UrlResponseDto;
+import com.shortener.shorturl.application.shortUrl.exception.AlreadyExistException;
+import com.shortener.shorturl.domain.urlShortener.repository.UrlRepository;
 import com.shortener.common.util.Base62;
-import com.shortener.domain.urlShortener.dto.UrlResponseListDto;
-import com.shortener.domain.urlShortener.entity.Url;
+import com.shortener.shorturl.application.shortUrl.dto.UrlResponseListDto;
+import com.shortener.shorturl.domain.urlShortener.entity.Url;
 import com.shortener.common.util.ShortenerUtil;
 import java.math.BigInteger;
 import java.security.NoSuchAlgorithmException;
@@ -92,5 +93,21 @@ public class ShortenerService {
                 return new UrlResponseDto(url.getId(), value);
             })
             .collect(Collectors.toList()));
+    }
+
+    public void checkAlreadyExistTarget(String url) {
+        urlRepository.findById(url)
+            .ifPresent((foundUrl) -> {
+                throw new AlreadyExistException(foundUrl + "은 이미 존재합니다");
+            });
+    }
+
+    public String createCustomUrl(String originUrl, String targetUrl) {
+        Url customUrl = urlRepository.save(Url.builder()
+            .originalUrl(originUrl)
+            .target(targetUrl)
+            .build());
+
+        return customUrl.getTarget();
     }
 }

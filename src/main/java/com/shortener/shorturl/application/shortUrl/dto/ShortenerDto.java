@@ -1,4 +1,4 @@
-package com.shortener.domain.urlShortener.dto;
+package com.shortener.shorturl.application.shortUrl.dto;
 
 import java.io.Serializable;
 import lombok.AllArgsConstructor;

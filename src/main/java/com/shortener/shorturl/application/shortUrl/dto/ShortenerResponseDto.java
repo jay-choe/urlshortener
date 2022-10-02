@@ -1,17 +1,18 @@
-package com.shortener.domain.urlShortener.dto;
+package com.shortener.shorturl.application.shortUrl.dto;
 
+import java.io.Serializable;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-@Setter
 @Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class UrlResponseDto {
-    private String id;
+public class ShortenerResponseDto implements Serializable {
+    private String originalUrl;
     private String value;
 }

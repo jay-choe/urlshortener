@@ -1,4 +1,4 @@
-package com.shortener.domain.apiKey.service;
+package com.shortener.shorturl.domain.apiKey.service;
 
 import com.shortener.common.util.ShortenerUtil;
 import lombok.extern.slf4j.Slf4j;
