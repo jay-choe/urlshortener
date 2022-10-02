@@ -4,13 +4,12 @@ import java.math.BigInteger;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
-@Component
 @Slf4j
 public class Base62 {
-    private final int BASE = 62;
-    public  final String BASE_FORMAT = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    private final static int BASE = 62;
+    public final static String BASE_FORMAT = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
-    public String encoding(BigInteger hashValue) {
+    public static String encoding(BigInteger hashValue) {
 
         if (hashValue.compareTo(BigInteger.ZERO) == 0) {
             return String.valueOf(BASE_FORMAT.charAt(0));
@@ -25,7 +24,7 @@ public class Base62 {
         return sb.reverse().toString();
     }
 
-    public String decoding(String encodedStr) {
+    public static String decoding(String encodedStr) {
         BigInteger retValue = BigInteger.ZERO;
         int indexOfEncodedStr = 0;
         while (indexOfEncodedStr < encodedStr.length()) {
@@ -37,7 +36,7 @@ public class Base62 {
         return addPadding(retValue.toString(16));
     }
 
-    public String addPadding(String decodedValue) {
+    public static String addPadding(String decodedValue) {
         if (decodedValue.length() < 10) {
             log.info("Add padding - decodedValue: {}", decodedValue);
             while (decodedValue.length() < 10) {
@@ -47,7 +46,7 @@ public class Base62 {
         }
         return decodedValue;
     }
-    public boolean checkInvalidCharacter(String value) {
+    public static boolean checkInvalidCharacter(String value) {
         int len = value.length();
         for (int i = 0; i < len; i++) {
             if (BASE_FORMAT.indexOf(value.charAt(i)) == -1) {

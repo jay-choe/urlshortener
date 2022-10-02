@@ -46,7 +46,7 @@ public class ShortenerController {
         response.sendRedirect(redirectUrl);
     }
 
-    @PostMapping("/url")
+    @PostMapping("/urls")
     public ResponseEntity<?> createShortUrl(String originalUrl,
         @RequestHeader(value = "X-API-KEY") String value) throws Exception {
         log.info("CreateShortUrl");
@@ -60,7 +60,7 @@ public class ShortenerController {
         return new ResponseEntity<>(new ShortenerResponseDto(originalUrl, shortUrl), HttpStatus.CREATED);
     }
 
-    @PostMapping("/urls")
+    @PostMapping("/multi-url")
     public ResponseEntity<?> createShortUrls(@RequestBody UrlCreateDto urlCreateDto
     , @RequestHeader(value = "X-API-KEY") String value) throws Exception {
         log.info("CreateShortUrls Called");

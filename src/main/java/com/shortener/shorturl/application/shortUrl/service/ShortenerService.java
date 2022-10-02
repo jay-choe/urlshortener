@@ -22,25 +22,23 @@ import org.springframework.stereotype.Service;
 public class ShortenerService {
     public final UrlRepository urlRepository;
     public final ShortenerUtil shortenerUtil;
-    public final Base62 base62;
 
     private final String errorRedirectUrl = "https://visitor.dev.42seoul.io/error";
 
     public ShortenerService(UrlRepository urlRepository,
-        ShortenerUtil shortenerUtil, Base62 base62) {
+        ShortenerUtil shortenerUtil) {
         this.urlRepository = urlRepository;
         this.shortenerUtil = shortenerUtil;
-        this.base62 = base62;
     }
 
     public String findOriginalUrl(String encodedValue) {
-        boolean isValidStr = base62.checkInvalidCharacter(encodedValue);
+        boolean isValidStr = Base62.checkInvalidCharacter(encodedValue);
 
         if (!isValidStr) {
             log.error("잘못된 인코딩 값: {}", encodedValue);
             return errorRedirectUrl;
         }
-        String originalHash = base62.decoding(encodedValue);
+        String originalHash = Base62.decoding(encodedValue);
 
         if (originalHash.length() != 10) {
             log.error("원본 해시길이가 아닙니다 {}", originalHash);
@@ -75,8 +73,8 @@ public class ShortenerService {
         }
         log.info("Truncated Hash Value is {}", value);
         BigInteger bigInteger = new BigInteger(value, 16);
-        String encoding = base62.encoding(bigInteger);
-        log.info("Encoded with base62 value is {}", encoding);
+        String encoding = Base62.encoding(bigInteger);
+        log.info("Encoded with Base62 value is {}", encoding);
         return encoding;
     }
 
