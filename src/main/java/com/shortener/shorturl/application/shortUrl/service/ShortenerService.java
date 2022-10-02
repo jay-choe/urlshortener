@@ -21,14 +21,11 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class ShortenerService {
     public final UrlRepository urlRepository;
-    public final ShortenerUtil shortenerUtil;
 
     private final String errorRedirectUrl = "https://visitor.dev.42seoul.io/error";
 
-    public ShortenerService(UrlRepository urlRepository,
-        ShortenerUtil shortenerUtil) {
+    public ShortenerService(UrlRepository urlRepository) {
         this.urlRepository = urlRepository;
-        this.shortenerUtil = shortenerUtil;
     }
 
     public String findOriginalUrl(String encodedValue) {
@@ -54,7 +51,7 @@ public class ShortenerService {
     }
 
     public String createShortUrl(String originalUrl) throws NoSuchAlgorithmException {
-        String hashValue = shortenerUtil.encrypt(originalUrl);
+        String hashValue = ShortenerUtil.encrypt(originalUrl);
         String value = hashValue.substring(0, 10);
         Url url = new Url(value, originalUrl);
         try {
