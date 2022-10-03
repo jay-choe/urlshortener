@@ -3,6 +3,7 @@ package com.shortener.shorturl.presentation.controller;
 import com.shortener.common.response.ApiResponse;
 import com.shortener.shorturl.application.shortUrl.dto.CreateCustomUrlCommand;
 import com.shortener.common.request.MultiShortUrlRequest;
+import com.shortener.shorturl.application.shortUrl.dto.CreateShortUrlListCommand;
 import com.shortener.shorturl.application.shortUrl.dto.ShortenerResponseDto;
 import com.shortener.shorturl.application.shortUrl.dto.UrlResponseListDto;
 import com.shortener.shorturl.domain.apiKey.service.ApiKeyService;
@@ -42,7 +43,7 @@ public class ShortenerController {
         log.info("value is {}", value);
         String redirectUrl = shortenerService.findOriginalUrl(value);
         log.info("Redirect URL is :{}", redirectUrl);
-        response.setStatus(HttpStatus.MOVED_PERMANENTLY.value());
+        response.setStatus(HttpStatus.FOUND.value());
         response.sendRedirect(redirectUrl);
     }
 
@@ -74,6 +75,7 @@ public class ShortenerController {
 
 
         // TODO: Presentation -> facade 계층 의존성 제거 (command)
+        CreateShortUrlListCommand command = CreateShortUrlListCommand.of(request);
         UrlResponseListDto shortUrls = shortenerService.createShortUrl(request.getUrlList());
         log.info("Short URLs are {}", shortUrls);
         return new ResponseEntity<>(shortUrls, HttpStatus.CREATED);
