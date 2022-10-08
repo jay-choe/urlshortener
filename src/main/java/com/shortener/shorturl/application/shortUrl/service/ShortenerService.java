@@ -1,19 +1,19 @@
 package com.shortener.shorturl.application.shortUrl.service;
 
-import com.shortener.common.request.ShortUrlRequest;
-import com.shortener.shorturl.application.shortUrl.dto.UrlResponseDto;
+import com.shortener.shorturl.application.shortUrl.dto.CreateShortUrlListCommand;
+import com.shortener.shorturl.application.shortUrl.dto.ShortUrlListResponse.UrlWithIdentifier;
 import com.shortener.shorturl.application.shortUrl.exception.AlreadyExistException;
 import com.shortener.shorturl.infrastructure.persistence.UrlRepository;
 import com.shortener.common.util.Base62;
-import com.shortener.shorturl.application.shortUrl.dto.UrlResponseListDto;
+import com.shortener.shorturl.application.shortUrl.dto.ShortUrlListResponse;
 import com.shortener.shorturl.domain.urlShortener.url.Url;
 import com.shortener.common.util.ShortenerUtil;
 import java.math.BigInteger;
 import java.security.NoSuchAlgorithmException;
-import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
@@ -22,7 +22,8 @@ import org.springframework.stereotype.Service;
 public class ShortenerService {
     public final UrlRepository urlRepository;
 
-    private final String errorRedirectUrl = "https://visitor.dev.42seoul.io/error";
+    @Value("${error-redirect-url}")
+    private String errorRedirectUrl;
 
     public ShortenerService(UrlRepository urlRepository) {
         this.urlRepository = urlRepository;
@@ -75,19 +76,25 @@ public class ShortenerService {
         return encoding;
     }
 
-    public UrlResponseListDto createShortUrl(List<ShortUrlRequest> urlList) {
-        return new UrlResponseListDto(urlList
+    public ShortUrlListResponse createShortUrl(CreateShortUrlListCommand command) {
+        return ShortUrlListResponse.builder()
+            .urlList(command.getUrlList()
+            .entrySet()
             .stream()
             .map(url -> {
                 String value = null;
                 try {
-                    value = createShortUrl(url.getOriginalUrl());
+                    value = createShortUrl(url.getValue());
                 } catch (NoSuchAlgorithmException e) {
                     log.error(e.getMessage());
                 }
-                return new UrlResponseDto(url.getId(), value);
+                return UrlWithIdentifier.builder()
+                    .id(url.getKey())
+                    .shortUrl(value)
+                    .build();
             })
-            .collect(Collectors.toList()));
+            .collect(Collectors.toList()))
+            .build();
     }
 
     public void checkAlreadyExistTarget(String url) {
