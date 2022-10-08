@@ -1,6 +1,8 @@
 package com.shortener.shorturl.application.shortUrl.service;
 
 import com.shortener.shorturl.application.shortUrl.dto.CreateCustomUrlCommand;
+import com.shortener.shorturl.application.shortUrl.dto.CreateShortUrlListCommand;
+import com.shortener.shorturl.application.shortUrl.dto.ShortUrlListResponse;
 import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -20,8 +22,8 @@ public class ShortenerFacade {
     }
 
     @Transactional
-    public void createShortUrlByMultiRequest() {
-
+    public ShortUrlListResponse createShortUrlByMultiRequest(CreateShortUrlListCommand command) {
+        return service.createShortUrlList(command.getUrlList());
     }
 
 }

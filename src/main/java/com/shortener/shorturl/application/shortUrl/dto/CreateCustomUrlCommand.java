@@ -3,6 +3,7 @@ package com.shortener.shorturl.application.shortUrl.dto;
 
 import lombok.Builder;
 import lombok.Getter;
+
 @Builder
 @Getter
 public class CreateCustomUrlCommand {

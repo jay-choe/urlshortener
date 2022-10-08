@@ -61,7 +61,7 @@ public class ShortenerController {
         log.info("CreateShortUrls Called");
         log.info("Contents: {}", request);
         CreateShortUrlListCommand command = CreateShortUrlListCommand.of(request);
-        ShortUrlListResponse shortUrls = shortenerService.createShortUrl(command);
+        ShortUrlListResponse shortUrls = shortenerFacade.createShortUrlByMultiRequest(command);
         log.info("Short URLs are {}", shortUrls);
         return new ResponseEntity<>(shortUrls, HttpStatus.CREATED);
     }

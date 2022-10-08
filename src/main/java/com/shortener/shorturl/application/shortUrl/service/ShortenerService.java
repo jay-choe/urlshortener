@@ -10,6 +10,7 @@ import com.shortener.shorturl.domain.urlShortener.url.Url;
 import com.shortener.common.util.ShortenerUtil;
 import java.math.BigInteger;
 import java.security.NoSuchAlgorithmException;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
@@ -76,9 +77,9 @@ public class ShortenerService {
         return encoding;
     }
 
-    public ShortUrlListResponse createShortUrl(CreateShortUrlListCommand command) {
+    public ShortUrlListResponse createShortUrlList(Map<String, String> urlList) {
         return ShortUrlListResponse.builder()
-            .urlList(command.getUrlList()
+            .urlList(urlList
             .entrySet()
             .stream()
             .map(url -> {
