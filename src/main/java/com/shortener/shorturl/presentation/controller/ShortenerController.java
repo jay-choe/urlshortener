@@ -42,6 +42,7 @@ public class ShortenerController {
         throws IOException {
         log.info("value is {}", value);
         String redirectUrl = shortenerService.findOriginalUrl(value);
+        response.setHeader("Location", redirectUrl);
         log.info("Redirect URL is :{}", redirectUrl);
         response.setStatus(HttpStatus.FOUND.value());
         response.sendRedirect(redirectUrl);
