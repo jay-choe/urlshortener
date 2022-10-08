@@ -38,7 +38,7 @@ public class ShortenerController {
     public void redirectToOriginalUrl(@PathVariable String value, HttpServletResponse response)
         throws IOException {
         log.info("value is {}", value);
-        String redirectUrl = shortenerService.findOriginalUrl(value);
+        String redirectUrl = shortenerFacade.getRedirectUrl(value);
         response.setHeader("Location", redirectUrl);
         log.info("Redirect URL is :{}", redirectUrl);
         response.setStatus(HttpStatus.FOUND.value());

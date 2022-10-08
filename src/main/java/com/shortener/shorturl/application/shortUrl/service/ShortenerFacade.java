@@ -12,6 +12,9 @@ import org.springframework.stereotype.Component;
 public class ShortenerFacade {
     private final ShortenerService service;
 
+    public String getRedirectUrl(String shortValue) {
+        return service.findOriginalUrl(shortValue);
+    }
     @Transactional
     public String createCustomUrl(CreateCustomUrlCommand command) {
         String originUrl = command.getOriginUrl();
