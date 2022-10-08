@@ -56,7 +56,7 @@ public class ShortenerController {
             .build(), HttpStatus.CREATED);
     }
 
-    @PostMapping("/multi-url")
+    @PostMapping("/multi-urls")
     public ResponseEntity<?> createShortUrls(@RequestBody MultiShortUrlRequest request) {
         log.info("CreateShortUrls Called");
         log.info("Contents: {}", request);

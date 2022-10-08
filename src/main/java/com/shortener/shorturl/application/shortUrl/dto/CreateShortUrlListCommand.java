@@ -22,4 +22,8 @@ public class CreateShortUrlListCommand {
 
         return new CreateShortUrlListCommand(urlMap);
     }
+
+    public int getSize() {
+        return this.urlList.size();
+    }
 }
