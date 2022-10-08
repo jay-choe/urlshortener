@@ -17,7 +17,7 @@ public class CreateShortUrlListCommand {
 
         Map<String ,String> urlMap = new HashMap<>();
 
-        request.getUrlList().stream()
+        request.getUrlList()
             .forEach(url -> urlMap.put(url.getId(), url.getOriginalUrl()));
 
         return new CreateShortUrlListCommand(urlMap);

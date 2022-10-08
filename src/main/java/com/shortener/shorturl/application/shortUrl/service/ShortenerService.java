@@ -38,11 +38,14 @@ public class ShortenerService {
         return foundUrl.get().getOriginalUrl();
     }
 
-    public String createShortUrl(String originalUrl) throws NoSuchAlgorithmException {
-        String hashValue = ShortenerUtil.encrypt(originalUrl);
-        String value = hashValue.substring(0, 7);
-        Url url = new Url(value, originalUrl);
+    public String createShortUrl(String originalUrl) {
+        String hashValue = null;
+        String value = null;
         try {
+            hashValue = ShortenerUtil.encrypt(originalUrl);
+            value = hashValue.substring(0, 7);
+            Url url = new Url(value, originalUrl);
+
             urlRepository.save(url);
         } catch (DataIntegrityViolationException exception) {
             log.error("Hash Collision Occured");
@@ -55,7 +58,10 @@ public class ShortenerService {
                 value = hashValue.substring(start, end);
             }
             urlRepository.save(new Url(value, originalUrl));
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException("No such algorithm exception: " + e.getMessage());
         }
+
         log.info("Truncated Hash Value is {}", value);
 
         return value;
@@ -68,11 +74,7 @@ public class ShortenerService {
             .stream()
             .map(url -> {
                 String value = null;
-                try {
-                    value = createShortUrl(url.getValue());
-                } catch (NoSuchAlgorithmException e) {
-                    log.error(e.getMessage());
-                }
+                value = createShortUrl(url.getValue());
                 return UrlWithIdentifier.builder()
                     .id(url.getKey())
                     .shortUrl(value)

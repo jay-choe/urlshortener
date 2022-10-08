@@ -1,6 +1,7 @@
 package com.shortener.shorturl.application.shortUrl.service;
 
 import com.shortener.shorturl.application.shortUrl.dto.CreateCustomUrlCommand;
+import com.shortener.shorturl.application.shortUrl.dto.CreateShortUrlCommand;
 import com.shortener.shorturl.application.shortUrl.dto.CreateShortUrlListCommand;
 import com.shortener.shorturl.application.shortUrl.dto.ShortUrlListResponse;
 import com.shortener.shorturl.application.shortUrl.exception.TooManyShortUrlRequestException;
@@ -31,4 +32,9 @@ public class ShortenerFacade {
         return service.createShortUrlList(command.getUrlList());
     }
 
+    @Transactional
+    public String createShortUrl(CreateShortUrlCommand command) {
+        String originalUrl = command.getOriginalUrl();
+        return service.createShortUrl(originalUrl);
+    }
 }

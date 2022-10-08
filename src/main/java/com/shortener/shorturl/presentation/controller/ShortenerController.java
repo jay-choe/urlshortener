@@ -1,13 +1,14 @@
 package com.shortener.shorturl.presentation.controller;
 
+import com.shortener.common.request.CreateShortUrlRequest;
 import com.shortener.common.response.ApiResponse;
 import com.shortener.shorturl.application.shortUrl.dto.CreateCustomUrlCommand;
 import com.shortener.common.request.MultiShortUrlRequest;
+import com.shortener.shorturl.application.shortUrl.dto.CreateShortUrlCommand;
 import com.shortener.shorturl.application.shortUrl.dto.CreateShortUrlListCommand;
 import com.shortener.shorturl.application.shortUrl.dto.ShortUrlResponse;
 import com.shortener.shorturl.application.shortUrl.dto.ShortUrlListResponse;
 import com.shortener.shorturl.application.shortUrl.service.ShortenerFacade;
-import com.shortener.shorturl.application.shortUrl.service.ShortenerService;
 import com.shortener.shorturl.presentation.dto.CreateCustomUrlRequest;
 import java.io.IOException;
 import javax.servlet.http.HttpServletResponse;
@@ -27,7 +28,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class ShortenerController {
 
     private final ShortenerFacade shortenerFacade;
-    private final ShortenerService shortenerService;
 
     @GetMapping("/")
     public String initialMessage() {
@@ -46,12 +46,12 @@ public class ShortenerController {
     }
 
     @PostMapping("/urls")
-    public ResponseEntity<?> createShortUrl(String originalUrl) throws Exception {
-        log.info("Original url is {}", originalUrl);
-        String shortUrl = shortenerService.createShortUrl(originalUrl);
+    public ResponseEntity<?> createShortUrl(CreateShortUrlRequest request) throws Exception {
+        log.info("Original url is {}", request.getOriginalUrl());
+        String shortUrl = shortenerFacade.createShortUrl(CreateShortUrlCommand.of(request));
         log.info("shortUrl is {}", shortUrl);
         return new ResponseEntity<>(ShortUrlResponse.builder()
-            .originalUrl(originalUrl)
+            .originalUrl(request.getOriginalUrl())
             .shortUrl(shortUrl)
             .build(), HttpStatus.CREATED);
     }
