@@ -26,4 +26,9 @@ public class RedisCacheService implements CacheService<Url> {
         ValueOperations valueOperations = redisTemplate.opsForValue();
         valueOperations.set(toCache.getTarget(), toCache.getOriginalUrl(), ttl, TimeUnit.MINUTES);
     }
+
+    @Override
+    public boolean exist(String key) {
+        return redisTemplate.hasKey(key);
+    }
 }

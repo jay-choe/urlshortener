@@ -5,6 +5,8 @@ import com.shortener.shorturl.application.shortUrl.dto.CreateShortUrlCommand;
 import com.shortener.shorturl.application.shortUrl.dto.CreateShortUrlListCommand;
 import com.shortener.shorturl.application.shortUrl.dto.ShortUrlListResponse;
 import com.shortener.shorturl.application.shortUrl.exception.TooManyShortUrlRequestException;
+import com.shortener.shorturl.domain.urlShortener.url.Url;
+import com.shortener.shorturl.infrastructure.persistence.CacheService;
 import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -13,9 +15,14 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class ShortenerFacade {
     private final ShortenerService service;
+    private final CacheService<Url> cacheService;
 
     public String getRedirectUrl(String shortValue) {
-        return service.findOriginalUrl(shortValue);
+        if (cacheService.exist(shortValue))
+            return cacheService.get(shortValue).getOriginalUrl();
+        Url originalUrl = service.findOriginalUrl(shortValue);
+        cacheService.set(originalUrl, 60);
+        return originalUrl.getOriginalUrl();
     }
     @Transactional
     public String createCustomUrl(CreateCustomUrlCommand command) {

@@ -27,15 +27,15 @@ public class ShortenerService {
         this.urlRepository = urlRepository;
     }
 
-    public String findOriginalUrl(String shortUrl) {
+    public Url findOriginalUrl(String shortUrl) {
 
         Optional<Url> foundUrl = urlRepository.findById(shortUrl);
 
         if (foundUrl.isEmpty()) {
             log.error("Url is not found");
-            return errorRedirectUrl;
+            throw new RuntimeException(String.format("URL: %s is not found", foundUrl));
         }
-        return foundUrl.get().getOriginalUrl();
+        return foundUrl.get();
     }
 
     public String createShortUrl(String originalUrl) {
