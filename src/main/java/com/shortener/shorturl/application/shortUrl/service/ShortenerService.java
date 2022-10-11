@@ -29,13 +29,8 @@ public class ShortenerService {
 
     public Url findOriginalUrl(String shortUrl) {
 
-        Optional<Url> foundUrl = urlRepository.findById(shortUrl);
-
-        if (foundUrl.isEmpty()) {
-            log.error("Url is not found");
-            throw new RuntimeException(String.format("URL: %s is not found", foundUrl));
-        }
-        return foundUrl.get();
+        return urlRepository.findById(shortUrl)
+            .orElseThrow(RuntimeException::new);
     }
 
     public String createShortUrl(String originalUrl) {
