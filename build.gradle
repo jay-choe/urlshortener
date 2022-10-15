@@ -5,7 +5,7 @@ plugins {
 }
 
 group = 'com.shortener'
-version = '0.0.14'
+version = '0.0.1'
 sourceCompatibility = '11'
 
 configurations {
@@ -21,11 +21,20 @@ repositories {
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
-	compileOnly 'org.projectlombok:lombok'
-	runtimeOnly 'mysql:mysql-connector-java'
-	annotationProcessor 'org.projectlombok:lombok'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 	implementation 'org.bgee.log4jdbc-log4j2:log4jdbc-log4j2-jdbc4.1:1.16'
+
+	compileOnly 'org.projectlombok:lombok'
+	compileOnly 'com.aventrix.jnanoid:jnanoid:2.0.0'
+
+	runtimeOnly 'mysql:mysql-connector-java'
+	runtimeOnly 'com.h2database:h2:2.1.214'
+
+	annotationProcessor 'org.projectlombok:lombok'
+
+	testImplementation "org.testcontainers:testcontainers:1.17.5"
+	testImplementation "it.ozimov:embedded-redis:0.7.2"
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
 test {

@@ -1,0 +1,14 @@
+spring:
+  config:
+    activate:
+      on-profile: test
+  datasource:
+    url: jdbc:h2:mem:shortener;MODE=MySQL;
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+  redis:
+    host: 127.0.0.1
+    port: 6370
+domain: http://localhost
+error-redirect-url: https://google.com

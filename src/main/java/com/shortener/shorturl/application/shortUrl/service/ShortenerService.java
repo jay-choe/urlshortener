@@ -18,7 +18,7 @@ import org.springframework.stereotype.Service;
 @Service
 @Slf4j
 public class ShortenerService {
-    public final UrlRepository urlRepository;
+    private final UrlRepository urlRepository;
 
     @Value("${error-redirect-url}")
     private String errorRedirectUrl;
@@ -27,15 +27,10 @@ public class ShortenerService {
         this.urlRepository = urlRepository;
     }
 
-    public String findOriginalUrl(String shortUrl) {
+    public Url findOriginalUrl(String shortUrl) {
 
-        Optional<Url> foundUrl = urlRepository.findById(shortUrl);
-
-        if (foundUrl.isEmpty()) {
-            log.error("Url is not found");
-            return errorRedirectUrl;
-        }
-        return foundUrl.get().getOriginalUrl();
+        return urlRepository.findById(shortUrl)
+            .orElseThrow(RuntimeException::new);
     }
 
     public String createShortUrl(String originalUrl) {
