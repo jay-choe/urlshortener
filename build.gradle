@@ -28,6 +28,7 @@ dependencies {
 	compileOnly 'com.aventrix.jnanoid:jnanoid:2.0.0'
 
 	runtimeOnly 'mysql:mysql-connector-java'
+	runtimeOnly 'com.h2database:h2:2.1.214'
 
 	annotationProcessor 'org.projectlombok:lombok'
 

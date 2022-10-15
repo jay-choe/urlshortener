@@ -9,9 +9,9 @@ import com.shortener.shorturl.domain.urlShortener.url.Url;
 import com.shortener.shorturl.infrastructure.persistence.CacheService;
 import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-@Component
+@Service
 @RequiredArgsConstructor
 public class ShortenerFacade {
     private final ShortenerService service;

@@ -1,11 +1,12 @@
 spring:
+  config:
+    activate:
+      on-profile: local
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/urlshortener?characterEncoding=UTF-8&serverTimezone=Asia/Seoul
     username: root
     password: 1234
-  profiles:
-    active: local
   redis:
     host: 127.0.0.1
     port: 6379
