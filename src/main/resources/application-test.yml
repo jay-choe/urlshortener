@@ -5,8 +5,8 @@ spring:
     username: root
     password: 1234
   profiles:
-    active: local
+    active: test
   redis:
     host: 127.0.0.1
-    port: 6379
+    port: 6370
 domain: http://localhost

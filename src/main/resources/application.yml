@@ -1,12 +1,7 @@
 spring:
-  profiles:
-    active: local
   jpa:
     hibernate:
       ddl-auto: update
     show-sql: true
 
-  redis:
-    host: 127.0.0.1
-    port: 6379
 error-redirect-url: https://google.com

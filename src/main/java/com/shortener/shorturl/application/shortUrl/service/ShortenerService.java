@@ -18,7 +18,7 @@ import org.springframework.stereotype.Service;
 @Service
 @Slf4j
 public class ShortenerService {
-    public final UrlRepository urlRepository;
+    private final UrlRepository urlRepository;
 
     @Value("${error-redirect-url}")
     private String errorRedirectUrl;
