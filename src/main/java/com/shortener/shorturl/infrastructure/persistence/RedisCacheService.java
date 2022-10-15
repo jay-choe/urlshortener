@@ -9,9 +9,9 @@ import org.springframework.stereotype.Service;
 @Service
 public class RedisCacheService implements CacheService<Url> {
 
-    private final RedisTemplate redisTemplate;
+    private final RedisTemplate<String, Url> redisTemplate;
 
-    public RedisCacheService(RedisTemplate redisTemplate) {
+    public RedisCacheService(RedisTemplate<String, Url> redisTemplate) {
         this.redisTemplate = redisTemplate;
     }
 
@@ -23,8 +23,14 @@ public class RedisCacheService implements CacheService<Url> {
 
     @Override
     public void set(Url toCache, int ttl) {
-        ValueOperations valueOperations = redisTemplate.opsForValue();
-        valueOperations.set(toCache.getTarget(), toCache.getOriginalUrl(), ttl, TimeUnit.MINUTES);
+        ValueOperations<String, Url> valueOperations = redisTemplate.opsForValue();
+        valueOperations.set(toCache.getTarget(), toCache, ttl, TimeUnit.MINUTES);
+    }
+
+    @Override
+    public void set(Url toCache) {
+        ValueOperations<String, Url> valueOperations = redisTemplate.opsForValue();
+        valueOperations.set(toCache.getTarget(), toCache);
     }
 
     @Override
