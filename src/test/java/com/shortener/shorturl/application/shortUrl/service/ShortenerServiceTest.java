@@ -30,7 +30,7 @@ public class ShortenerServiceTest {
 
         Url url = Url.builder()
             .originalUrl("http://localhost/")
-            .target("test")
+            .address("test")
             .build();
 
         given(repository.findById("test"))
@@ -42,7 +42,7 @@ public class ShortenerServiceTest {
 
     @Test
     void checkAlreadyExistTarget() {
-        assertThrows(AlreadyExistException.class, () -> service.checkAlreadyExistTarget("test"));
+        assertThrows(AlreadyExistException.class, () -> service.checkAlreadyExistAddress("test"));
     }
 
     @Test

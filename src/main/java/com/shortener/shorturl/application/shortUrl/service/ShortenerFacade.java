@@ -1,9 +1,9 @@
 package com.shortener.shorturl.application.shortUrl.service;
 
-import com.shortener.shorturl.application.shortUrl.dto.CreateCustomUrlCommand;
-import com.shortener.shorturl.application.shortUrl.dto.CreateShortUrlCommand;
-import com.shortener.shorturl.application.shortUrl.dto.CreateShortUrlListCommand;
-import com.shortener.shorturl.application.shortUrl.dto.ShortUrlListResponse;
+import com.shortener.shorturl.application.shortUrl.dto.command.CreateCustomUrlCommand;
+import com.shortener.shorturl.application.shortUrl.dto.command.CreateShortUrlCommand;
+import com.shortener.shorturl.application.shortUrl.dto.command.CreateShortUrlListCommand;
+import com.shortener.shorturl.application.shortUrl.dto.response.ShortUrlListResponse;
 import com.shortener.shorturl.application.shortUrl.exception.TooManyShortUrlRequestException;
 import com.shortener.shorturl.domain.urlShortener.url.Url;
 import com.shortener.shorturl.infrastructure.persistence.CacheService;
@@ -29,7 +29,7 @@ public class ShortenerFacade {
         String originUrl = command.getOriginUrl();
         String target = command.getTarget();
 
-        service.checkAlreadyExistTarget(target);
+        service.checkAlreadyExistAddress(target);
         return service.createCustomUrl(originUrl, target);
     }
 

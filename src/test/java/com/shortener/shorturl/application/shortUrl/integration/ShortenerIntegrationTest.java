@@ -27,7 +27,7 @@ public class ShortenerIntegrationTest {
     void init() {
         repository.save(Url.builder()
             .originalUrl("http://test.com")
-            .target("custom")
+            .address("custom")
             .build());
     }
 

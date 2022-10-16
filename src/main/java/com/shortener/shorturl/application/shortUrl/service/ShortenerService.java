@@ -1,14 +1,13 @@
 package com.shortener.shorturl.application.shortUrl.service;
 
-import com.shortener.shorturl.application.shortUrl.dto.ShortUrlListResponse.UrlWithIdentifier;
+import com.shortener.shorturl.application.shortUrl.dto.response.ShortUrlListResponse.UrlWithIdentifier;
 import com.shortener.shorturl.application.shortUrl.exception.AlreadyExistException;
 import com.shortener.shorturl.infrastructure.persistence.UrlRepository;
-import com.shortener.shorturl.application.shortUrl.dto.ShortUrlListResponse;
+import com.shortener.shorturl.application.shortUrl.dto.response.ShortUrlListResponse;
 import com.shortener.shorturl.domain.urlShortener.url.Url;
 import com.shortener.common.util.ShortenerUtil;
 import java.security.NoSuchAlgorithmException;
 import java.util.Map;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -79,19 +78,19 @@ public class ShortenerService {
             .build();
     }
 
-    public void checkAlreadyExistTarget(String url) {
+    public void checkAlreadyExistAddress(String url) {
         urlRepository.findById(url)
             .ifPresent((foundUrl) -> {
                 throw new AlreadyExistException(foundUrl + "은 이미 존재합니다");
             });
     }
 
-    public String createCustomUrl(String originUrl, String targetUrl) {
+    public String createCustomUrl(String originUrl, String address) {
         Url customUrl = urlRepository.save(Url.builder()
             .originalUrl(originUrl)
-            .target(targetUrl)
+            .address(address)
             .build());
 
-        return customUrl.getTarget();
+        return customUrl.getAddress();
     }
 }

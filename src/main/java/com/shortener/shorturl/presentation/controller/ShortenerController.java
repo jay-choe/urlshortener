@@ -2,12 +2,12 @@ package com.shortener.shorturl.presentation.controller;
 
 import com.shortener.common.request.CreateShortUrlRequest;
 import com.shortener.common.response.ApiResponse;
-import com.shortener.shorturl.application.shortUrl.dto.CreateCustomUrlCommand;
+import com.shortener.shorturl.application.shortUrl.dto.command.CreateCustomUrlCommand;
 import com.shortener.common.request.MultiShortUrlRequest;
-import com.shortener.shorturl.application.shortUrl.dto.CreateShortUrlCommand;
-import com.shortener.shorturl.application.shortUrl.dto.CreateShortUrlListCommand;
-import com.shortener.shorturl.application.shortUrl.dto.ShortUrlResponse;
-import com.shortener.shorturl.application.shortUrl.dto.ShortUrlListResponse;
+import com.shortener.shorturl.application.shortUrl.dto.command.CreateShortUrlCommand;
+import com.shortener.shorturl.application.shortUrl.dto.command.CreateShortUrlListCommand;
+import com.shortener.shorturl.application.shortUrl.dto.response.ShortUrlResponse;
+import com.shortener.shorturl.application.shortUrl.dto.response.ShortUrlListResponse;
 import com.shortener.shorturl.application.shortUrl.service.ShortenerFacade;
 import com.shortener.shorturl.presentation.dto.CreateCustomUrlRequest;
 import java.io.IOException;

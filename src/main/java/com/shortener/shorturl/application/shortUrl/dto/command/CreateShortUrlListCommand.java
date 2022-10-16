@@ -1,4 +1,4 @@
-package com.shortener.shorturl.application.shortUrl.dto;
+package com.shortener.shorturl.application.shortUrl.dto.command;
 
 import com.shortener.common.request.MultiShortUrlRequest;
 import java.util.HashMap;

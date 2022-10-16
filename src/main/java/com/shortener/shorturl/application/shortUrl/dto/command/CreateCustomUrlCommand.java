@@ -1,4 +1,4 @@
-package com.shortener.shorturl.application.shortUrl.dto;
+package com.shortener.shorturl.application.shortUrl.dto.command;
 
 
 import lombok.Builder;

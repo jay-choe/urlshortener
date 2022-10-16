@@ -24,17 +24,17 @@ public class RedisCacheService implements CacheService<Url> {
     @Override
     public void set(Url toCache, int ttl) {
         ValueOperations<String, Url> valueOperations = redisTemplate.opsForValue();
-        valueOperations.set(toCache.getTarget(), toCache, ttl, TimeUnit.MINUTES);
+        valueOperations.set(toCache.getAddress(), toCache, ttl, TimeUnit.MINUTES);
     }
 
     @Override
     public void set(Url toCache) {
         ValueOperations<String, Url> valueOperations = redisTemplate.opsForValue();
-        valueOperations.set(toCache.getTarget(), toCache);
+        valueOperations.set(toCache.getAddress(), toCache);
     }
 
     @Override
     public boolean exist(String key) {
-        return redisTemplate.hasKey(key);
+        return Boolean.TRUE.equals(redisTemplate.hasKey(key));
     }
 }
