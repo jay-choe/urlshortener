@@ -1,5 +1,6 @@
 package com.shortener.shorturl.domain.urlShortener.url;
 
+import com.shortener.shorturl.domain.common.BaseTime;
 import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,7 +16,7 @@ import org.hibernate.Hibernate;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Url {
+public class Url extends BaseTime {
     @Id
     private String address;
 
