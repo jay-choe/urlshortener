@@ -20,7 +20,7 @@ public class Url extends BaseTime {
     @Id
     private String address;
 
-    @Column
+    @Column(name = "original_url", nullable = false)
     private String originalUrl;
 
     @Override
