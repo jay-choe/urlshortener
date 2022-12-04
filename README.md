@@ -1,25 +1,31 @@
-### 개발환경
-java 11
+## URL SHORTENER PROJECT
 
-MySQL
+This project is to shorten your original URL to varius type short URL.
 
-Spring Boot
+### ENV 
+- java 11
 
+- MySQL For Database
 
-### 실행방법
-
-application.-local.properties 파일 수정 (본인 환경에 맞게)
-
-```yaml
-spring.datasource.url=jdbc:mysql://localhost:3306/urlshortener?characterEncoding=UTF-8&serverTimezone=Asia/Seoul
-spring.datasource.username=root
-spring.datasource.password=1234
-```
-
-#### gradle bootRun task 실행
-
-> ./gradlew bootRun
+- Spring Boot 2.5
 
 
-### API 명세
+### How To Build
+
+In your 'application.yml' File.
+
+You can specify your profile for yourself.
+
+
+Default set profile is local and the file is specified.
+
+
+### Architecture
+<img width="353" alt="스크린샷 2022-12-04 오전 10 01 13" src="https://user-images.githubusercontent.com/64317196/205469292-2fa220b7-fbaf-4186-8a6c-74f8784a8e8f.png">
+
+- Using Cache Layer for Higher Response Speed.
+  - Also In many cases, the URL often gets many traffic within certain time when it shared.
+  - The default setting for caching is Redis. But you can change by implementing Caching related interface,
+
+### API Specification
 > TBD
