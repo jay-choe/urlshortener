@@ -68,6 +68,13 @@ tasks.register("restDocsTest", Test) {
 	finalizedBy 'asciidoctor'
 }
 
+tasks.register("copyOASToSwagger", Copy.class) {
+	delete("src/main/resources/static/swagger-ui/openapi3.yaml")
+	from("build/api-spec/openapi3.yaml")
+	into("src/main/resources/static/swagger-ui/.")
+	dependsOn "openapi3"
+}
+
 tasks.named("asciidoctor") {
 	dependsOn restDocsTest
 
@@ -75,6 +82,7 @@ tasks.named("asciidoctor") {
 	inputs.dir snippetsDir
 	baseDirFollowsSourceDir()
 }
+
 
 openapi3 {
 	servers = [ {
