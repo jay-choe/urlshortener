@@ -28,4 +28,8 @@ Default set profile is local and the file is specified.
   - The default setting for caching is Redis. But you can change by implementing Caching related interface,
 
 ### API Specification
-> TBD
+
+static swagger-ui file which is created by restdocs
+
+**see**
+> /src/main/resources/static/index.html
