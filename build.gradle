@@ -35,12 +35,12 @@ dependencies {
 
 	annotationProcessor 'org.projectlombok:lombok'
 
-	testImplementation "org.testcontainers:testcontainers:1.17.5"
-	testImplementation "it.ozimov:embedded-redis:0.7.2"
+	testImplementation 'org.testcontainers:testcontainers:1.17.6'
+	testImplementation 'it.ozimov:embedded-redis:0.7.3'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
 	asciidoctor 'org.springframework.restdocs:spring-restdocs-asciidoctor'
-	testCompileOnly 'org.springframework.restdocs:spring-restdocs-mockmvc'
+	testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
 
 }
 
