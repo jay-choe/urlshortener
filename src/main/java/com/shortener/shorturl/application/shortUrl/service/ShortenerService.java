@@ -2,6 +2,7 @@ package com.shortener.shorturl.application.shortUrl.service;
 
 import com.shortener.shorturl.application.shortUrl.dto.response.ShortUrlListResponse.UrlWithIdentifier;
 import com.shortener.shorturl.application.shortUrl.exception.AlreadyExistException;
+import com.shortener.shorturl.application.shortUrl.exception.URLNotFoundException;
 import com.shortener.shorturl.infrastructure.persistence.UrlRepository;
 import com.shortener.shorturl.application.shortUrl.dto.response.ShortUrlListResponse;
 import com.shortener.shorturl.domain.urlShortener.url.Url;
@@ -29,7 +30,7 @@ public class ShortenerService {
     public Url findOriginalUrl(String shortUrl) {
 
         return urlRepository.findById(shortUrl)
-            .orElseThrow(RuntimeException::new);
+            .orElseThrow(() -> new URLNotFoundException("URL is not found"));
     }
 
     public String createShortUrl(String originalUrl) {
