@@ -1,5 +1,7 @@
 package com.shortener.common.response;
 
+import com.shortener.common.enums.ApiResponseCode;
+
 public class ApiResponse<T> {
 
     private String code;
@@ -10,7 +12,7 @@ public class ApiResponse<T> {
         this.data = data;
     }
 
-    public static <T> ApiResponse of(String code, T data) {
-        return new ApiResponse(code, data);
+    public static <T> ApiResponse of(ApiResponseCode responseCode, T data) {
+        return new ApiResponse(responseCode.name(), data);
     }
 }
