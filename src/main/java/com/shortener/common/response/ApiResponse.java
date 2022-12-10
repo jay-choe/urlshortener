@@ -1,7 +1,9 @@
 package com.shortener.common.response;
 
 import com.shortener.common.enums.ApiResponseCode;
+import lombok.Getter;
 
+@Getter
 public class ApiResponse<T> {
 
     private String code;
