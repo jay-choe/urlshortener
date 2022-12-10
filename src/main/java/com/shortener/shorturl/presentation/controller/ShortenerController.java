@@ -43,19 +43,17 @@ public class ShortenerController {
     @PostMapping("/urls")
     public ApiResponse<?> createShortUrl(CreateShortUrlRequest request) {
         final String originalURL = request.getOriginalUrl();
-        String shortUrl = shortenerFacade.createShortUrl(CreateShortUrlCommand.of(request));
 
         return ApiResponse.of("2010",ShortUrlResponse.builder()
             .originalUrl(originalURL)
-            .shortUrl(shortUrl)
+            .shortUrl(shortenerFacade.createShortUrl(CreateShortUrlCommand.of(request)))
             .build());
     }
 
     @PostMapping("/urls/custom-url")
     public ApiResponse<?> createCustomUrl(@RequestBody CreateCustomUrlRequest request) {
         CreateCustomUrlCommand command = CreateCustomUrlCommand.of(request.getOriginUrl(), request.getTarget());
-        String customUrl = shortenerFacade.createCustomUrl(command);
-        return ApiResponse.of("2010", customUrl);
+        return ApiResponse.of("2010", shortenerFacade.createCustomUrl(command));
     }
 
     @PostMapping("/urls/multi")
