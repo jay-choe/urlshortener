@@ -1,6 +1,7 @@
 plugins {
 	id 'org.springframework.boot' version '2.5.3'
-	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+	id 'io.spring.dependency-management' version '1.1.0'
+	id "org.asciidoctor.convert" version "2.4.0"
 	id 'java'
 }
 
@@ -9,6 +10,9 @@ version = '0.0.1'
 sourceCompatibility = '11'
 
 configurations {
+	all*.exclude module : 'spring-boot-starter-logging'
+	all*.exclude module : 'logback-classic'
+
 	compileOnly {
 		extendsFrom annotationProcessor
 	}
@@ -34,6 +38,21 @@ dependencies {
 	testImplementation "org.testcontainers:testcontainers:1.17.5"
 	testImplementation "it.ozimov:embedded-redis:0.7.2"
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+	asciidoctor 'org.springframework.restdocs:spring-restdocs-asciidoctor'
+	testCompileOnly 'org.springframework.restdocs:spring-restdocs-mockmvc'
+
+}
+
+asciidoctor {
+	dependsOn test
+}
+
+bootJar {
+	dependsOn asciidoctor
+	from ("${asciidoctor.outputDir}/html5") {
+		into 'static/docs'
+	}
 }
 
 test {
