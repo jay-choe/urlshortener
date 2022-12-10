@@ -37,40 +37,37 @@ public class ShortenerController {
     @GetMapping("/{value}")
     public void redirectToOriginalUrl(@PathVariable String value, HttpServletResponse response)
         throws IOException {
-        log.info("value is {}", value);
-        String redirectUrl = shortenerFacade.getRedirectUrl(value);
-        response.setHeader("Location", redirectUrl);
-        log.info("Redirect URL is :{}", redirectUrl);
-        response.setStatus(HttpStatus.FOUND.value());
-        response.sendRedirect(redirectUrl);
+        setRedirectInfo(shortenerFacade.getRedirectUrl(value), response);
     }
 
     @PostMapping("/urls")
-    public ResponseEntity<?> createShortUrl(CreateShortUrlRequest request) throws Exception {
-        log.info("Original url is {}", request.getOriginalUrl());
+    public ApiResponse<?> createShortUrl(CreateShortUrlRequest request) {
+        final String originalURL = request.getOriginalUrl();
         String shortUrl = shortenerFacade.createShortUrl(CreateShortUrlCommand.of(request));
-        log.info("shortUrl is {}", shortUrl);
-        return new ResponseEntity<>(ShortUrlResponse.builder()
-            .originalUrl(request.getOriginalUrl())
+
+        return ApiResponse.of("2010",ShortUrlResponse.builder()
+            .originalUrl(originalURL)
             .shortUrl(shortUrl)
-            .build(), HttpStatus.CREATED);
+            .build());
     }
 
-    @PostMapping("/multi-urls")
-    public ResponseEntity<?> createShortUrls(@RequestBody MultiShortUrlRequest request) {
-        log.info("CreateShortUrls Called");
-        log.info("Contents: {}", request);
-        CreateShortUrlListCommand command = CreateShortUrlListCommand.of(request);
-        ShortUrlListResponse shortUrls = shortenerFacade.createShortUrlByMultiRequest(command);
-        log.info("Short URLs are {}", shortUrls);
-        return new ResponseEntity<>(shortUrls, HttpStatus.CREATED);
-    }
-
-    @PostMapping("/custom-url")
+    @PostMapping("/urls/custom-url")
     public ApiResponse<?> createCustomUrl(@RequestBody CreateCustomUrlRequest request) {
-        log.info("Create Custom URL Request");
         CreateCustomUrlCommand command = CreateCustomUrlCommand.of(request.getOriginUrl(), request.getTarget());
         String customUrl = shortenerFacade.createCustomUrl(command);
         return ApiResponse.of("2010", customUrl);
+    }
+
+    @PostMapping("/urls/multi")
+    public ApiResponse<?> createShortUrls(@RequestBody MultiShortUrlRequest request) {
+        CreateShortUrlListCommand command = CreateShortUrlListCommand.of(request);
+        return ApiResponse.of("2010", shortenerFacade.createShortUrlByMultiRequest(command));
+    }
+
+    private void setRedirectInfo(String redirectURL, HttpServletResponse response)
+        throws IOException {
+        response.setHeader("Location", redirectURL);
+        response.setStatus(HttpStatus.FOUND.value());
+        response.sendRedirect(redirectURL);
     }
 }
