@@ -41,7 +41,7 @@ public class ShortenerController {
     }
 
     @PostMapping("/urls")
-    public ApiResponse<?> createShortUrl(CreateShortUrlRequest request) {
+    public ApiResponse<?> createShortUrl(@RequestBody CreateShortUrlRequest request) {
         final String originalURL = request.getOriginalUrl();
 
         return ApiResponse.of(CREATED_SUCCESS,ShortUrlResponse.builder()
