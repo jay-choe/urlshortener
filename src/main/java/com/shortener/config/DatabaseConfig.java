@@ -8,7 +8,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
 @EntityScan(basePackages = "com.shortener.shorturl.domain")
-@EnableJpaRepositories(basePackages = "com.shortener.shorturl.domain")
+@EnableJpaRepositories(basePackages = "com.shortener.shorturl.infrastructure")
 @EnableJpaAuditing
 @EnableTransactionManagement
 public class DatabaseConfig {
