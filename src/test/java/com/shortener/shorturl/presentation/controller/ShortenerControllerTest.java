@@ -1,28 +1,25 @@
 package com.shortener.shorturl.presentation.controller;
 
+import static com.epages.restdocs.apispec.MockMvcRestDocumentationWrapper.document;
+import static com.epages.restdocs.apispec.ResourceDocumentation.resource;
 import static com.shortener.shorturl.presentation.controller.util.ApiDocsUtil.getDocumentRequest;
 import static com.shortener.shorturl.presentation.controller.util.ApiDocsUtil.getDocumentResponse;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
+
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.when;
-import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
-import static org.springframework.restdocs.request.RequestDocumentation.requestParameters;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.epages.restdocs.apispec.ResourceSnippetParameters;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
-import com.fasterxml.jackson.module.paramnames.ParameterNamesModule;
 import com.shortener.common.request.CreateShortUrlRequest;
 import com.shortener.shorturl.application.shortUrl.dto.command.CreateCustomUrlCommand;
 import com.shortener.shorturl.application.shortUrl.dto.command.CreateShortUrlCommand;
@@ -45,14 +42,10 @@ import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.testcontainers.shaded.com.fasterxml.jackson.core.JsonProcessingException;
 import org.testcontainers.shaded.com.fasterxml.jackson.databind.ObjectMapper;
-import org.testcontainers.shaded.org.bouncycastle.util.encoders.UTF8;
 
 @ExtendWith({RestDocumentationExtension.class, SpringExtension.class})
 @WebMvcTest(ShortenerController.class)
@@ -91,11 +84,15 @@ class ShortenerControllerTest {
         resultActions
             .andExpect(status()
                 .is3xxRedirection())
-            .andDo(document("redirect-request-success",
+            .andDo(document("redirect-request",
                 getDocumentRequest(),
                 getDocumentResponse(),
-                pathParameters(parameterWithName("value")
-                    .description("Short URL"))));
+                resource(ResourceSnippetParameters.builder()
+                    .pathParameters(
+                        parameterWithName("value")
+                        .description("Short URL"))
+                        .build())
+                ));
     }
 
     @Test
@@ -109,11 +106,13 @@ class ShortenerControllerTest {
         resultActions
             .andExpect(status()
                 .is3xxRedirection())
-            .andDo(document("redirect-request-failed",
+            .andDo(document("redirect-request",
                 getDocumentRequest(),
                 getDocumentResponse(),
-                pathParameters(parameterWithName("value")
-                    .description("Not valid Short URL"))));
+                resource(ResourceSnippetParameters.builder()
+                    .pathParameters(parameterWithName("value")
+                    .description("Not valid Short URL"))
+                    .build())));
     }
 
     @Test
@@ -134,17 +133,17 @@ class ShortenerControllerTest {
         resultActions
             .andDo(print())
             .andExpect(status().is2xxSuccessful())
-            .andDo(document("create short URL",
+            .andDo(document("create-short-URL",
                 getDocumentRequest(),
                 getDocumentResponse(),
-                requestFields(
-                    fieldWithPath("originalUrl").description("URL to short")
-                ),
-                responseFields(
-                    fieldWithPath("code").description("status code"),
-                    fieldWithPath("data").description("response data"),
-                    fieldWithPath("data.originalUrl").description("URL requested to shorten"),
-                    fieldWithPath("data.shortUrl").description("short URL which is created")
+                resource(ResourceSnippetParameters.builder()
+                        .requestFields(
+                            fieldWithPath("originalUrl").description("URL to short"))
+                        .responseFields(
+                            fieldWithPath("code").description("status code"),
+                            fieldWithPath("data").description("response data"),
+                            fieldWithPath("data.originalUrl").description("URL requested to shorten"),
+                            fieldWithPath("data.shortUrl").description("short URL which is created")).build()
                 )));
     }
 
@@ -171,16 +170,17 @@ class ShortenerControllerTest {
             .andDo(print())
             .andExpect(status().is2xxSuccessful())
             .andExpect(MockMvcResultMatchers.jsonPath("$.data").value(customURL))
-            .andDo(document("create short URL",
+            .andDo(document("create-custom-URL",
                 getDocumentRequest(),
                 getDocumentResponse(),
-                requestFields(
-                    fieldWithPath("originUrl").description("URL to short"),
-                    fieldWithPath("target").description("Custom Short URL to make from")
-                ),
-                responseFields(
-                    fieldWithPath("code").description("status code"),
-                    fieldWithPath("data").description("custom url")
+                resource(ResourceSnippetParameters.builder()
+                    .requestFields(
+                        fieldWithPath("originUrl").description("URL to short"),
+                        fieldWithPath("target").description("Custom Short URL to make from")
+                    ).responseFields(
+                        fieldWithPath("code").description("status code"),
+                        fieldWithPath("data").description("custom url")
+                    ).build()
                 )));
     }
 

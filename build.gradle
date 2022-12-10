@@ -1,7 +1,8 @@
 plugins {
 	id 'org.springframework.boot' version '2.5.3'
-	id 'io.spring.dependency-management' version '1.1.0'
-	id "org.asciidoctor.convert" version "2.4.0"
+	id 'io.spring.dependency-management' version '1.0.13.RELEASE'
+	id 'org.asciidoctor.jvm.convert' version "3.3.2"
+	id 'com.epages.restdocs-api-spec' version '0.16.2'
 	id 'java'
 }
 
@@ -13,9 +14,15 @@ configurations {
 	all*.exclude module : 'spring-boot-starter-logging'
 	all*.exclude module : 'logback-classic'
 
+	asciidoctorExtensions
+
 	compileOnly {
 		extendsFrom annotationProcessor
 	}
+}
+
+ext {
+	snippetsDir = file("build/generated-snippets")
 }
 
 repositories {
@@ -26,6 +33,8 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+	implementation 'org.springdoc:springdoc-openapi-ui:1.6.13'
+	implementation 'org.springdoc:springdoc-openapi-webmvc-core:1.6.13'
 
 	compileOnly 'org.projectlombok:lombok'
 	compileOnly 'com.aventrix.jnanoid:jnanoid:2.0.0'
@@ -38,23 +47,41 @@ dependencies {
 	testImplementation 'org.testcontainers:testcontainers:1.17.6'
 	testImplementation 'it.ozimov:embedded-redis:0.7.3'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation('com.epages:restdocs-api-spec:0.16.2')
+	testImplementation('com.epages:restdocs-api-spec-mockmvc:0.16.2')
 
-	asciidoctor 'org.springframework.restdocs:spring-restdocs-asciidoctor'
+	asciidoctorExtensions 'org.springframework.restdocs:spring-restdocs-asciidoctor'
 	testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
 
+	testCompileOnly 'org.projectlombok:lombok:1.18.12'
+	testAnnotationProcessor 'org.projectlombok:lombok:1.18.12'
+
 }
 
-asciidoctor {
-	dependsOn test
-}
-
-bootJar {
-	dependsOn asciidoctor
-	from ("${asciidoctor.outputDir}/html5") {
-		into 'static/docs'
-	}
-}
-
-test {
+tasks.named("test") {
+	outputs.dir snippetsDir
 	useJUnitPlatform()
+}
+
+tasks.register("restDocsTest", Test) {
+	finalizedBy 'openapi3'
+	finalizedBy 'asciidoctor'
+}
+
+tasks.named("asciidoctor") {
+	dependsOn restDocsTest
+
+	configurations 'asciidoctorExtensions'
+	inputs.dir snippetsDir
+	baseDirFollowsSourceDir()
+}
+
+openapi3 {
+	servers = [ {
+		url = 'http://localhost:8080'}
+	]
+	title = 'short URL docs'
+	description('short URL docs')
+	version("${project.version}")
+	format = 'yaml'
 }

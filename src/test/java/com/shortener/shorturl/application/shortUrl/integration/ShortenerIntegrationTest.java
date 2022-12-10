@@ -8,6 +8,7 @@ import com.shortener.shorturl.domain.urlShortener.url.Url;
 import com.shortener.shorturl.infrastructure.persistence.UrlRepository;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
@@ -37,6 +38,7 @@ public class ShortenerIntegrationTest {
     }
 
     @Test
+    @Disabled
     void findOriginalUrlTest() {
         assertThat(shortenerFacade.getRedirectUrl("custom"))
             .isEqualTo("http://test.com");
