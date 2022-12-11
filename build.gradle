@@ -65,6 +65,7 @@ tasks.named("test") {
 tasks.register("restDocsTest", Test) {
 	finalizedBy 'openapi3'
 	finalizedBy 'asciidoctor'
+	finalizedBy 'copyOASToSwagger'
 }
 
 tasks.register("copyOASToSwagger", Copy.class) {
