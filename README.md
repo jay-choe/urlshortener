@@ -29,7 +29,9 @@ Default set profile is local and the file is specified.
 
 ### API Specification
 
-static swagger-ui file which is created by restdocs
+static swagger-ui file which is created by following gradle task in project root dir
+
+> run task with your gradle **copyOASToSwagger** 
 
 **see**
 > /src/main/resources/static/index.html
