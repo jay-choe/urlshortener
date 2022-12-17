@@ -1,4 +1,4 @@
-package com.shortener.shorturl.infrastructure.persistence;
+package com.shortener.shorturl.infrastructure.cache;
 
 import com.shortener.shorturl.domain.urlShortener.url.Url;
 import java.util.concurrent.TimeUnit;

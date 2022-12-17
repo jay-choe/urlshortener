@@ -6,7 +6,7 @@ import com.shortener.shorturl.application.shortUrl.dto.command.CreateShortUrlLis
 import com.shortener.shorturl.application.shortUrl.dto.response.ShortUrlListResponse;
 import com.shortener.shorturl.application.shortUrl.exception.TooManyShortUrlRequestException;
 import com.shortener.shorturl.domain.urlShortener.url.Url;
-import com.shortener.shorturl.infrastructure.persistence.CacheService;
+import com.shortener.shorturl.infrastructure.cache.CacheService;
 import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

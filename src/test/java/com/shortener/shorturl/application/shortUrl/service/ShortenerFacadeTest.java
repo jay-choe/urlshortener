@@ -1,12 +1,11 @@
 package com.shortener.shorturl.application.shortUrl.service;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 import com.shortener.shorturl.domain.urlShortener.url.Url;
-import com.shortener.shorturl.infrastructure.persistence.CacheService;
+import com.shortener.shorturl.infrastructure.cache.CacheService;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
