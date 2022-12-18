@@ -18,10 +18,11 @@ public class ShortenerFacade {
     private final CacheService<Url> cacheService;
 
     public String getRedirectUrl(String shortValue) {
+        // TODO cache -> AOP
         if (cacheService.exist(shortValue))
             return cacheService.get(shortValue).getOriginalUrl();
         Url originalUrl = service.findOriginalUrl(shortValue);
-        cacheService.set(originalUrl, 60);
+        cacheService.set(originalUrl, 60);  // update?
         return originalUrl.getOriginalUrl();
     }
     @Transactional
