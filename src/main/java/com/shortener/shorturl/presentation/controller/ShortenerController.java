@@ -46,7 +46,7 @@ public class ShortenerController {
 
         return ApiResponse.of(CREATED_SUCCESS,ShortUrlResponse.builder()
             .originalUrl(originalURL)
-            .shortUrl(shortenerFacade.createShortUrl(CreateShortUrlCommand.of(request)))
+            .shortUrl(shortenerFacade.createFixedShortURL(CreateShortUrlCommand.of(request)))
             .build());
     }
 

@@ -33,7 +33,7 @@ public class ShortenerService {
             .orElseThrow(() -> new URLNotFoundException("URL is not found"));
     }
 
-    public String createShortUrl(String originalUrl) {
+    public String createFixedShortURL(String originalUrl) {
         String hashValue = null;
         String value = null;
         try {
@@ -69,7 +69,7 @@ public class ShortenerService {
             .stream()
             .map(url -> {
                 String value = null;
-                value = createShortUrl(url.getValue());
+                value = createFixedShortURL(url.getValue());
                 return UrlWithIdentifier.builder()
                     .id(url.getKey())
                     .shortUrl(value)
