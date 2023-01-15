@@ -1,12 +1,14 @@
 package com.shortener.shorturl.application.shortUrl.service;
 
+import com.shortener.common.enums.GenerateType;
 import com.shortener.shorturl.application.shortUrl.dto.response.ShortUrlListResponse.UrlWithIdentifier;
 import com.shortener.shorturl.application.shortUrl.exception.AlreadyExistException;
 import com.shortener.shorturl.application.shortUrl.exception.URLNotFoundException;
+import com.shortener.shorturl.application.shortUrl.service.generator.ShortURLGenerateStrategy;
+import com.shortener.shorturl.application.shortUrl.service.generator.ShortURLGeneratorFactory;
 import com.shortener.shorturl.infrastructure.persistence.UrlRepository;
 import com.shortener.shorturl.application.shortUrl.dto.response.ShortUrlListResponse;
 import com.shortener.shorturl.domain.urlShortener.url.Url;
-import com.shortener.common.util.ShortenerUtil;
 import java.security.NoSuchAlgorithmException;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -36,8 +38,9 @@ public class ShortenerService {
     public String createFixedShortURL(String originalUrl) {
         String hashValue = null;
         String value = null;
+        final ShortURLGenerateStrategy fixedURLStrategy = ShortURLGeneratorFactory.getStrategy(GenerateType.FIXED);
         try {
-            hashValue = ShortenerUtil.encrypt(originalUrl);
+            hashValue = fixedURLStrategy.create(originalUrl);
             value = hashValue.substring(0, 7);
             Url url = new Url(value, originalUrl);
 
@@ -53,8 +56,6 @@ public class ShortenerService {
                 value = hashValue.substring(start, end);
             }
             urlRepository.save(new Url(value, originalUrl));
-        } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException("No such algorithm exception: " + e.getMessage());
         }
 
         log.info("Truncated Hash Value is {}", value);
