@@ -9,7 +9,6 @@ import com.shortener.shorturl.application.shortUrl.service.generator.ShortURLGen
 import com.shortener.shorturl.infrastructure.persistence.UrlRepository;
 import com.shortener.shorturl.application.shortUrl.dto.response.ShortUrlListResponse;
 import com.shortener.shorturl.domain.urlShortener.url.Url;
-import java.security.NoSuchAlgorithmException;
 import java.util.Map;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
@@ -39,6 +38,7 @@ public class ShortenerService {
         String hashValue = null;
         String value = null;
         final ShortURLGenerateStrategy fixedURLStrategy = ShortURLGeneratorFactory.getStrategy(GenerateType.FIXED);
+
         try {
             hashValue = fixedURLStrategy.create(originalUrl);
             value = hashValue.substring(0, 7);
@@ -46,11 +46,13 @@ public class ShortenerService {
 
             urlRepository.save(url);
         } catch (DataIntegrityViolationException exception) {
-            log.error("Hash Collision Occured");
+            log.error("Hash Collision Occurred");
             int start = 0;
             int end = 0;
 
-            while (urlRepository.existsById(value) && end <= 32) {
+            while (true) {
+                assert value != null;
+                if (!(urlRepository.existsById(value) && end <= 32)) break;
                 start++;
                 end = start + 10;
                 value = hashValue.substring(start, end);
