@@ -6,4 +6,5 @@ package com.shortener.shorturl.application.shortUrl.service.generator;
  */
 public interface ShortURLGenerateStrategy {
     String create(String originalURL);
+    String create();
 }
