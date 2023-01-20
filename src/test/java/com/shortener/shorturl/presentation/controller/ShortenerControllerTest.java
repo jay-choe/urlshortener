@@ -4,7 +4,6 @@ import static com.epages.restdocs.apispec.MockMvcRestDocumentationWrapper.docume
 import static com.epages.restdocs.apispec.ResourceDocumentation.resource;
 import static com.shortener.shorturl.presentation.controller.util.ApiDocsUtil.getDocumentRequest;
 import static com.shortener.shorturl.presentation.controller.util.ApiDocsUtil.getDocumentResponse;
-import static org.junit.jupiter.api.Assertions.*;
 
 import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
@@ -17,7 +16,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.epages.restdocs.apispec.ResourceSnippetParameters;
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.shortener.common.request.CreateShortUrlRequest;
@@ -32,7 +30,6 @@ import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.MockitoAnnotations;
-import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
@@ -121,7 +118,7 @@ class ShortenerControllerTest {
             .originalUrl("http://google.com/too/long/url/which/is/not/easy/to/recognize/at/once")
             .build();
 
-        given(facade.createShortUrl(CreateShortUrlCommand.of(shortUrlRequest)))
+        given(facade.createFixedShortURL(CreateShortUrlCommand.of(shortUrlRequest)))
             .willReturn("abcdefg");
 
         ResultActions resultActions = mockMvc.perform(RestDocumentationRequestBuilders.post("/urls")

@@ -41,8 +41,12 @@ public class ShortenerFacade {
     }
 
     @Transactional
-    public String createShortUrl(CreateShortUrlCommand command) {
+    public String createFixedShortURL(CreateShortUrlCommand command) {
         String originalUrl = command.getOriginalUrl();
-        return service.createShortUrl(originalUrl);
+        return service.createFixedShortURL(originalUrl);
+    }
+
+    public String createRandomURL() {
+        return service.createRandomUrl();
     }
 }

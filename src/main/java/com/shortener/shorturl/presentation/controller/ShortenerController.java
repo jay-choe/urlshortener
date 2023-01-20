@@ -40,13 +40,24 @@ public class ShortenerController {
         setRedirectInfo(shortenerFacade.getRedirectUrl(value), response);
     }
 
-    @PostMapping("/urls")
-    public ApiResponse<?> createShortUrl(@RequestBody CreateShortUrlRequest request) {
+    @PostMapping("/urls/random")
+    public ApiResponse<?> createRandomShortUrl(@RequestBody CreateShortUrlRequest request) {
+        final String originalURL = request.getOriginalUrl();
+
+        return ApiResponse.of(CREATED_SUCCESS,
+                ShortUrlResponse.builder()
+                        .originalUrl(originalURL)
+                        .shortUrl(shortenerFacade.createRandomURL())
+                        .build());
+    }
+
+    @PostMapping("/urls/fixed")
+    public ApiResponse<?> createFixedShortURL(@RequestBody CreateShortUrlRequest request) {
         final String originalURL = request.getOriginalUrl();
 
         return ApiResponse.of(CREATED_SUCCESS,ShortUrlResponse.builder()
             .originalUrl(originalURL)
-            .shortUrl(shortenerFacade.createShortUrl(CreateShortUrlCommand.of(request)))
+            .shortUrl(shortenerFacade.createFixedShortURL(CreateShortUrlCommand.of(request)))
             .build());
     }
 
