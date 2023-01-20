@@ -45,4 +45,8 @@ public class ShortenerFacade {
         String originalUrl = command.getOriginalUrl();
         return service.createFixedShortURL(originalUrl);
     }
+
+    public String createRandomURL() {
+        return service.createRandomUrl();
+    }
 }

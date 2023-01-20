@@ -9,8 +9,10 @@ import com.shortener.shorturl.application.shortUrl.service.generator.ShortURLGen
 import com.shortener.shorturl.infrastructure.persistence.UrlRepository;
 import com.shortener.shorturl.application.shortUrl.dto.response.ShortUrlListResponse;
 import com.shortener.shorturl.domain.urlShortener.url.Url;
+
 import java.util.Map;
 import java.util.stream.Collectors;
+
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -31,7 +33,7 @@ public class ShortenerService {
     public Url findOriginalUrl(String shortUrl) {
 
         return urlRepository.findById(shortUrl)
-            .orElseThrow(() -> new URLNotFoundException("URL is not found"));
+                .orElseThrow(() -> new URLNotFoundException("URL is not found"));
     }
 
     public String createFixedShortURL(String originalUrl) {
@@ -67,34 +69,44 @@ public class ShortenerService {
 
     public ShortUrlListResponse createShortUrlList(Map<String, String> urlList) {
         return ShortUrlListResponse.builder()
-            .urlList(urlList
-            .entrySet()
-            .stream()
-            .map(url -> {
-                String value = null;
-                value = createFixedShortURL(url.getValue());
-                return UrlWithIdentifier.builder()
-                    .id(url.getKey())
-                    .shortUrl(value)
-                    .build();
-            })
-            .collect(Collectors.toList()))
-            .build();
+                .urlList(urlList
+                        .entrySet()
+                        .stream()
+                        .map(url -> {
+                            String value = null;
+                            value = createFixedShortURL(url.getValue());
+                            return UrlWithIdentifier.builder()
+                                    .id(url.getKey())
+                                    .shortUrl(value)
+                                    .build();
+                        })
+                        .collect(Collectors.toList()))
+                .build();
     }
 
     public void checkAlreadyExistAddress(String url) {
         urlRepository.findById(url)
-            .ifPresent((foundUrl) -> {
-                throw new AlreadyExistException(foundUrl + "은 이미 존재합니다");
-            });
+                .ifPresent((foundUrl) -> {
+                    throw new AlreadyExistException(foundUrl + "은 이미 존재합니다");
+                });
     }
 
     public String createCustomUrl(String originUrl, String address) {
         Url customUrl = urlRepository.save(Url.builder()
-            .originalUrl(originUrl)
-            .address(address)
-            .build());
+                .originalUrl(originUrl)
+                .address(address)
+                .build());
 
         return customUrl.getAddress();
+    }
+
+    public String createRandomUrl() {
+        final ShortURLGenerateStrategy randomURLGenStg = ShortURLGeneratorFactory.getStrategy(GenerateType.RANDOM);
+        String shortURL;
+
+        do {
+            shortURL = randomURLGenStg.create();
+        } while (urlRepository.existsById(shortURL));
+        return shortURL;
     }
 }
