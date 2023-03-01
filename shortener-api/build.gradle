@@ -6,10 +6,6 @@ plugins {
 	id 'java'
 }
 
-group = 'com.shortener'
-version = '0.0.1'
-java.sourceCompatibility = JavaVersion.VERSION_17
-
 configurations {
 	all*.exclude module : 'spring-boot-starter-logging'
 	all*.exclude module : 'logback-classic'
@@ -25,9 +21,7 @@ ext {
 	snippetsDir = file("build/generated-snippets")
 }
 
-repositories {
-	mavenCentral()
-}
+java.sourceCompatibility = JavaVersion.VERSION_17
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
