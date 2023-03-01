@@ -3,11 +3,11 @@
 This project is to shorten your original URL to varius type short URL.
 
 ### ENV 
-- java 11
+- java 17
 
 - MySQL For Database
 
-- Spring Boot 2.5
+- Spring Boot 2.7
 
 
 ### How To Build
