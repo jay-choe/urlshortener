@@ -6,7 +6,7 @@ buildscript {
 }
 
 subprojects {
-    group = "com.example"
+    group = "com.shortener"
     version = "0.0.1-SNAPSHOT"
 
 }

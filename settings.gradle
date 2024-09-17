@@ -1,3 +1,4 @@
 rootProject.name = 'urlshortener'
 include 'shortener-api'
 include 'auth'
+include 'core'
